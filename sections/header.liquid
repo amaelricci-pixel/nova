@@ -1,0 +1,262 @@
+{%- liquid
+  assign menu = section.settings.menu
+  assign search_placeholder = section.settings.search_placeholder
+  if search_placeholder == blank
+    assign search_placeholder = 'general.search.placeholder' | t
+  endif
+  assign search_tag = 'nova-drawer'
+  if settings.predictive_search_enabled
+    assign search_tag = 'predictive-search'
+  endif
+-%}
+<div class="header-wrapper{% if section.settings.transparent and template.name == 'index' %} header--transparent{% endif %}">
+  <nova-header data-hide-on-scroll="{{ section.settings.hide_on_scroll }}">
+    <header class="header">
+      <div class="page-width header__inner">
+        <div class="header__left">
+          <button type="button" class="icon-button header__menu-toggle" data-open-drawer="MenuDrawer" aria-controls="MenuDrawer" aria-label="{{ 'accessibility.menu' | t }}">
+            {% render 'icon', name: 'menu' %}
+          </button>
+          <button type="button" class="icon-button hide-desktop" data-open-drawer="SearchModal" aria-label="{{ 'general.search.title' | t }}">
+            {% render 'icon', name: 'search' %}
+          </button>
+        </div>
+
+        <div class="header__logo">
+          {%- if template.name == 'index' -%}<h1 style="margin: 0; font-size: inherit;">{%- endif -%}
+          <a href="{{ routes.root_url }}" aria-label="{{ shop.name }}">
+            {%- if settings.logo != blank -%}
+              {%- assign logo_width_2x = settings.logo_width | times: 2 -%}
+              {{
+                settings.logo
+                | image_url: width: logo_width_2x
+                | image_tag: alt: shop.name, loading: 'eager'
+              }}
+            {%- else -%}
+              <span class="header__logo-text">{{ shop.name | upcase }}</span>
+            {%- endif -%}
+          </a>
+          {%- if template.name == 'index' -%}</h1>{%- endif -%}
+        </div>
+
+        {%- if menu != blank -%}
+          <nav class="header__nav" aria-label="{{ 'accessibility.main_navigation' | t }}">
+            <ul class="nav" role="list">
+              {%- for link in menu.links -%}
+                {%- liquid
+                  assign promo_block = nil
+                  for block in section.blocks
+                    assign block_title = block.settings.menu_item | downcase | strip
+                    assign link_title = link.title | downcase | strip
+                    if block_title == link_title
+                      assign promo_block = block
+                    endif
+                  endfor
+                -%}
+                <li class="nav__item"{% if link.links.size > 0 %} data-mega{% endif %}>
+                  <a
+                    href="{{ link.url }}"
+                    class="nav__link"
+                    {% if link.current %}aria-current="page"{% endif %}
+                    {% if link.links.size > 0 %}aria-haspopup="true" aria-expanded="false"{% endif %}
+                  >
+                    {{- link.title | escape -}}
+                    {%- if link.links.size > 0 %}{% render 'icon', name: 'chevron-down', class: '' %}{% endif -%}
+                  </a>
+                  {%- if link.links.size > 0 -%}
+                    <div class="mega">
+                      <div class="mega__inner">
+                        {%- for child in link.links -%}
+                          <div>
+                            <a href="{{ child.url }}" class="mega__title">{{ child.title | escape }}</a>
+                            {%- if child.links.size > 0 -%}
+                              <ul class="mega__list" role="list">
+                                {%- for grandchild in child.links -%}
+                                  <li><a href="{{ grandchild.url }}">{{ grandchild.title | escape }}</a></li>
+                                {%- endfor -%}
+                              </ul>
+                            {%- endif -%}
+                          </div>
+                        {%- endfor -%}
+                        <div>
+                          <a href="{{ link.url }}" class="link">{{ 'general.navigation.view_all' | t }} {% render 'icon', name: 'arrow-right' %}</a>
+                        </div>
+                        {%- if promo_block -%}
+                          <a href="{{ promo_block.settings.link | default: link.url }}" class="mega__promo" {{ promo_block.shopify_attributes }}>
+                            {%- if promo_block.settings.image != blank -%}
+                              {{ promo_block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: promo_block.settings.image.alt | escape }}
+                            {%- endif -%}
+                            <span>{{ promo_block.settings.heading }}</span>
+                          </a>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        {%- endif -%}
+
+        <div class="header__right">
+          <button type="button" class="icon-button hide-mobile" data-open-drawer="SearchModal" aria-label="{{ 'general.search.title' | t }}">
+            {% render 'icon', name: 'search' %}
+          </button>
+          {%- if shop.customer_accounts_enabled -%}
+            <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="icon-button hide-mobile" aria-label="{{ 'customer.account.title' | t }}">
+              {% render 'icon', name: 'account' %}
+            </a>
+          {%- endif -%}
+          <a href="{{ routes.cart_url }}" class="icon-button" data-cart-trigger aria-label="{{ 'cart.general.title' | t }}">
+            {% render 'icon', name: 'cart' %}
+            <span data-cart-count-wrapper>
+              {%- if cart.item_count > 0 -%}
+                <span class="cart-count" data-cart-count aria-hidden="true">{{ cart.item_count | at_most: 99 }}</span>
+              {%- endif -%}
+            </span>
+            <span class="visually-hidden">{{ 'cart.general.item_count' | t: count: cart.item_count }}</span>
+          </a>
+        </div>
+      </div>
+    </header>
+  </nova-header>
+</div>
+
+{%- comment -%} Menu mobile {%- endcomment -%}
+<nova-drawer id="MenuDrawer" class="drawer drawer--left" aria-hidden="true">
+  <div class="drawer__overlay" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'accessibility.menu' | t }}" tabindex="-1">
+    <div class="drawer__header">
+      <span class="header__logo-text" style="font-size: 1.2rem;">{{ shop.name | upcase }}</span>
+      <button type="button" class="icon-button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+    </div>
+    <div class="drawer__body">
+      {%- if menu != blank -%}
+        <nav class="mobile-nav" aria-label="{{ 'accessibility.main_navigation' | t }}">
+          {%- for link in menu.links -%}
+            {%- if link.links.size > 0 -%}
+              <details>
+                <summary>{{ link.title | escape }} {% render 'icon', name: 'chevron-down', class: '' %}</summary>
+                <div class="mobile-nav__sub">
+                  <a href="{{ link.url }}">{{ 'general.navigation.view_all' | t }}</a>
+                  {%- for child in link.links -%}
+                    <a href="{{ child.url }}">{{ child.title | escape }}</a>
+                  {%- endfor -%}
+                </div>
+              </details>
+            {%- else -%}
+              <a href="{{ link.url }}" class="mobile-nav__link">{{ link.title | escape }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+      <div class="mobile-nav__footer">
+        {%- if shop.customer_accounts_enabled -%}
+          <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="link">
+            {% render 'icon', name: 'account' %} {{ 'customer.account.title' | t }}
+          </a>
+        {%- endif -%}
+        {% render 'social-icons' %}
+      </div>
+    </div>
+  </div>
+</nova-drawer>
+
+{%- comment -%} Recherche (prédictive si activée) {%- endcomment -%}
+<{{ search_tag }} id="SearchModal" class="search-modal" aria-hidden="true">
+  <div class="search-modal__overlay" data-close></div>
+  <div class="search-modal__panel" role="dialog" aria-modal="true" aria-label="{{ 'general.search.title' | t }}" tabindex="-1">
+    <div class="search-modal__bar">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="page-width search-modal__form">
+        {% render 'icon', name: 'search' %}
+        <input type="hidden" name="options[prefix]" value="last">
+        <input
+          type="search"
+          name="q"
+          class="search-modal__input"
+          placeholder="{{ search_placeholder | escape }}"
+          aria-label="{{ 'general.search.title' | t }}"
+          autocomplete="off"
+          data-autofocus
+        >
+        <button type="button" class="icon-button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+      </form>
+    </div>
+    <div class="page-width">
+      <div class="predictive" data-predictive-default>
+        {%- if section.settings.search_menu != blank -%}
+          <p class="predictive__heading">{{ 'general.search.popular' | t }}</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+            {%- for link in section.settings.search_menu.links -%}
+              <a href="{{ link.url }}" class="facet-pill">{{ link.title | escape }}</a>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div data-predictive-results hidden aria-live="polite"></div>
+    </div>
+  </div>
+</{{ search_tag }}>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "class": "section-header",
+  "enabled_on": { "groups": ["header"] },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu principal",
+      "default": "main-menu",
+      "info": "Les sous-menus (2 niveaux) s'affichent en méga-menu sur ordinateur."
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_scroll",
+      "label": "Masquer l'en-tête en défilant vers le bas",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent",
+      "label": "En-tête transparent sur la page d'accueil",
+      "info": "À utiliser avec une bannière sombre en haut de page.",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Recherche"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Texte d'aide",
+      "default": "Rechercher un collier, une gamelle, un jouet…"
+    },
+    {
+      "type": "link_list",
+      "id": "search_menu",
+      "label": "Recherches populaires",
+      "info": "Liens affichés à l'ouverture de la recherche."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_promo",
+      "name": "Visuel méga-menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item",
+          "label": "Élément du menu concerné",
+          "info": "Saisissez exactement le titre de l'élément (ex. : Chiens)."
+        },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "heading", "label": "Titre", "default": "Nouvelle collection" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,111 @@
+{%- liquid
+  assign sort_by = search.sort_by | default: search.default_sort_by
+  assign has_filters = false
+  if search.performed and search.filters.size > 0 and section.settings.enable_filtering
+    assign has_filters = true
+  endif
+-%}
+<div class="page-width">
+  <div class="page-header">
+    <h1>{{ 'general.search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="newsletter__form" style="max-width: 640px; margin-top: 12px;">
+      <label for="SearchPageInput" class="visually-hidden">{{ 'general.search.title' | t }}</label>
+      <input type="hidden" name="options[prefix]" value="last">
+      <input id="SearchPageInput" type="search" name="q" class="input" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" autocomplete="off">
+      <button type="submit" class="button button--accent">{% render 'icon', name: 'search' %}<span class="visually-hidden">{{ 'general.search.submit' | t }}</span></button>
+    </form>
+  </div>
+</div>
+
+{%- if search.performed -%}
+  <collection-filters class="section section--flush-top" data-section="{{ section.id }}" style="display: block;">
+    <div class="page-width">
+      {%- paginate search.results by section.settings.per_page -%}
+        <div class="collection-toolbar">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            {%- if has_filters -%}
+              <button type="button" class="button button--outline button--small" data-open-drawer="FacetsDrawer-{{ section.id }}">
+                {% render 'icon', name: 'filter' %} {{ 'collections.filters.title' | t }}
+              </button>
+            {%- endif -%}
+            <p class="collection-toolbar__count" id="ProductCount-{{ section.id }}">
+              {{ 'general.search.results_count' | t: count: search.results_count, terms: search.terms }}
+            </p>
+          </div>
+          {%- if search.results_count > 0 -%}
+            <div class="collection-toolbar__actions">
+              <label for="SortBy-{{ section.id }}" class="visually-hidden">{{ 'collections.sorting.title' | t }}</label>
+              <select id="SortBy-{{ section.id }}" name="sort_by" class="select">
+                {%- for option in search.sort_options -%}
+                  <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endif -%}
+        </div>
+
+        <div class="collection-products" id="CollectionProducts-{{ section.id }}">
+          {%- if search.results_count > 0 -%}
+            <ul class="grid" role="list" style="--cols: 4;">
+              {%- for item in search.results -%}
+                <li>
+                  {%- case item.object_type -%}
+                    {%- when 'product' -%}
+                      {% render 'product-card', product: item, index: forloop.index0 %}
+                    {%- when 'article', 'page' -%}
+                      <a href="{{ item.url }}" class="article-card" data-reveal>
+                        <div class="media media--square" style="display: grid; place-items: center;">
+                          {%- if item.image -%}
+                            {{ item.image | image_url: width: 600 | image_tag: loading: 'lazy', alt: item.title | escape }}
+                          {%- else -%}
+                            <span class="h4" style="position: relative; padding: 20px; text-align: center;">{{ item.title | escape }}</span>
+                          {%- endif -%}
+                        </div>
+                        <span class="article-card__meta">{% if item.object_type == 'page' %}{{ 'general.search.page' | t }}{% else %}{{ 'blogs.article.label' | t }}{% endif %}</span>
+                        <h3 class="card__title">{{ item.title | escape }}</h3>
+                      </a>
+                  {%- endcase -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+            {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate %}{%- endif -%}
+          {%- else -%}
+            <div class="empty-state">
+              <p class="h3">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+              <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.general.continue_shopping' | t }}</a>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endpaginate -%}
+    </div>
+
+    {%- comment -%} Formulaire des filtres (tiroir) — conserve aussi le terme de recherche {%- endcomment -%}
+    <nova-drawer id="FacetsDrawer-{{ section.id }}" class="drawer drawer--left" aria-hidden="true">
+      <div class="drawer__overlay" data-close></div>
+      <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'collections.filters.title' | t }}" tabindex="-1">
+        <div class="drawer__header">
+          <p class="drawer__title">{{ 'collections.filters.title' | t }}</p>
+          <button type="button" class="icon-button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+        </div>
+        <div class="drawer__body" id="FacetsDrawerBody-{{ section.id }}">
+          {% render 'facets', results: search, id_prefix: 'SearchDrawer' %}
+        </div>
+        <div class="drawer__footer">
+          <button type="button" class="button button--full" data-close>{{ 'collections.filters.see_results' | t }}</button>
+        </div>
+      </div>
+    </nova-drawer>
+  </collection-filters>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Résultats de recherche",
+  "tag": "section",
+  "class": "section-main-search",
+  "settings": [
+    { "type": "range", "id": "per_page", "label": "Résultats par page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "checkbox", "id": "enable_filtering", "label": "Activer les filtres", "default": true }
+  ]
+}
+{% endschema %}

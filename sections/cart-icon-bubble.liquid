@@ -1,0 +1,6 @@
+{%- comment -%}
+  Section technique : renvoie la pastille du nombre d'articles (Section Rendering API).
+{%- endcomment -%}
+{%- if cart.item_count > 0 -%}
+  <span class="cart-count" data-cart-count aria-hidden="true">{{ cart.item_count | at_most: 99 }}</span>
+{%- endif -%}

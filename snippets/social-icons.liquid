@@ -1,0 +1,16 @@
+{%- liquid
+  assign networks = 'instagram,tiktok,facebook,youtube,x,pinterest' | split: ','
+-%}
+<ul class="social" role="list">
+  {%- for network in networks -%}
+    {%- assign key = 'social_' | append: network -%}
+    {%- assign url = settings[key] -%}
+    {%- if url != blank -%}
+      <li>
+        <a href="{{ url }}" target="_blank" rel="noopener" aria-label="{{ network | capitalize }}">
+          {% render 'icon', name: network %}
+        </a>
+      </li>
+    {%- endif -%}
+  {%- endfor -%}
+</ul>

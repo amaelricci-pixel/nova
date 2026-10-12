@@ -1,0 +1,28 @@
+{%- layout none -%}
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>{{ 'gift_card.title' | t }} — {{ shop.name }}</title>
+    {% render 'css-variables' %}
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ content_for_header }}
+  </head>
+  <body>
+    <main class="password-page">
+      <div class="password-page__inner">
+        <span class="header__logo-text">{{ shop.name | upcase }}</span>
+        <h1 class="h2">{{ 'gift_card.title' | t }}</h1>
+        <p class="display">{{ gift_card.balance | money }}</p>
+        {%- if gift_card.expired -%}<p class="form-message form-message--error">{{ 'gift_card.expired' | t }}</p>{%- endif -%}
+        <div class="promo__code" style="margin: 0 auto;">
+          <span>{{ gift_card.code | format_code }}</span>
+          <button type="button" onclick="navigator.clipboard.writeText('{{ gift_card.code }}')">{{ 'sections.promo.copy' | t }}</button>
+        </div>
+        {%- if gift_card.pass_url -%}<a href="{{ gift_card.pass_url }}" class="button button--light">Apple Wallet</a>{%- endif -%}
+        <a href="{{ shop.url }}" class="button button--accent">{{ 'cart.general.continue_shopping' | t }}</a>
+      </div>
+    </main>
+  </body>
+</html>

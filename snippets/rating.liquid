@@ -1,0 +1,30 @@
+{%- comment -%}
+  Note moyenne d'un produit — UNIQUEMENT à partir de vraies données.
+  Source : métachamp standard `reviews.rating` et `reviews.rating_count`,
+  automatiquement remplis par les applications d'avis compatibles
+  (Judge.me, Shopify Product Reviews, Loox, Okendo, Yotpo…).
+  Si le produit n'a aucun avis, rien n'est affiché.
+
+  Paramètres : product, show_count (bool), size ('large')
+{%- endcomment -%}
+{%- if product.metafields.reviews.rating.value != blank -%}
+  {%- liquid
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_value = rating.rating | default: 0
+    assign rating_max = rating.scale_max | default: 5
+    assign pct = rating_value | times: 100.0 | divided_by: rating_max | round: 1
+    assign count = product.metafields.reviews.rating_count.value | default: 0
+  -%}
+  {%- if count > 0 or rating_value > 0 -%}
+    <div class="rating{% if size == 'large' %} rating--large{% endif %}">
+      <span class="rating__stars" style="--pct: {{ pct }}%;" aria-hidden="true"></span>
+      <span class="visually-hidden">
+        {{- 'products.rating.label' | t: rating: rating_value, max: rating_max -}}
+      </span>
+      <span aria-hidden="true">{{ rating_value | round: 1 }}</span>
+      {%- if show_count and count > 0 -%}
+        <span>({{ 'products.rating.count' | t: count: count }})</span>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}

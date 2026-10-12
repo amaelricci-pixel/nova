@@ -1,0 +1,87 @@
+{%- comment -%}
+  Tiroir panier latéral. Rafraîchi via la section « cart-drawer » (Section Rendering API).
+{%- endcomment -%}
+<cart-drawer id="CartDrawer" class="drawer drawer--right" aria-hidden="true">
+  <div class="drawer__overlay" data-close></div>
+  <div class="drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawerTitle" tabindex="-1">
+    <div id="CartDrawerInner" class="cart-drawer__inner">
+      <div class="drawer__header">
+        <h2 class="drawer__title" id="CartDrawerTitle">
+          {{ 'cart.general.title' | t }}
+          {%- if cart.item_count > 0 %} <span class="text-muted">({{ cart.item_count }})</span>{% endif -%}
+        </h2>
+        <button type="button" class="icon-button" data-close aria-label="{{ 'accessibility.close' | t }}">
+          {% render 'icon', name: 'close' %}
+        </button>
+      </div>
+
+      {%- if cart.item_count > 0 -%}
+        <div class="drawer__body">
+          {% render 'free-shipping' %}
+          {% render 'cart-line-items' %}
+
+          {%- if settings.cart_show_note -%}
+            <details class="accordion mt-3">
+              <summary>{{ 'cart.general.note' | t }}<span class="accordion__icon"></span></summary>
+              <textarea class="textarea" name="note" aria-label="{{ 'cart.general.note' | t }}">{{ cart.note }}</textarea>
+            </details>
+          {%- endif -%}
+        </div>
+
+        <div class="drawer__footer">
+          <div class="cart-summary">
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="cart-summary__row" style="color: var(--color-accent);">
+                <span>{{ discount.title }}</span>
+                <span>-{{ discount.total_allocated_amount | money }}</span>
+              </div>
+            {%- endfor -%}
+            <div class="cart-summary__row cart-summary__total">
+              <span>{{ 'cart.general.subtotal' | t }}</span>
+              <span>{{ cart.total_price | money_with_currency }}</span>
+            </div>
+            <p class="cart-summary__note">{{ 'cart.general.taxes_and_shipping' | t }}</p>
+            <form action="{{ routes.cart_url }}" method="post" novalidate>
+              <button type="submit" name="checkout" class="button button--accent button--full">
+                {% render 'icon', name: 'lock' %}
+                {{ 'cart.general.checkout' | t }}
+              </button>
+            </form>
+            <a href="{{ routes.cart_url }}" class="link" style="justify-self: center;">{{ 'cart.general.view_cart' | t }}</a>
+          </div>
+        </div>
+      {%- else -%}
+        <div class="drawer__body">
+          <div class="cart-empty">
+            <div class="cart-empty__icon">{% render 'icon', name: 'cart' %}</div>
+            <p class="h4">{{ 'cart.general.empty' | t }}</p>
+            <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'cart.general.continue_shopping' | t }}</a>
+          </div>
+
+          {%- assign upsell = settings.cart_empty_collection -%}
+          {%- if upsell != blank and upsell.products_count > 0 -%}
+            <div class="cart-upsell">
+              <p class="cart-upsell__title">{{ upsell.title }}</p>
+              <div style="display: grid; gap: 10px;">
+                {%- for product in upsell.products limit: 4 -%}
+                  <a href="{{ product.url }}" class="cart-upsell__item">
+                    <div class="media media--square">
+                      {%- if product.featured_media -%}
+                        {{ product.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: product.title | escape }}
+                      {%- endif -%}
+                    </div>
+                    <div>
+                      <div>{{ product.title | escape }}</div>
+                      {% render 'price', product: product %}
+                    </div>
+                    {% render 'icon', name: 'arrow-right' %}
+                  </a>
+                {%- endfor -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</cart-drawer>

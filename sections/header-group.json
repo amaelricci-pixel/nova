@@ -1,0 +1,52 @@
+{
+  "type": "header",
+  "name": "Groupe en-tête",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement-1": {
+          "type": "announcement",
+          "settings": {
+            "text": "Livraison offerte dès 49 € d'achat"
+          }
+        },
+        "announcement-2": {
+          "type": "announcement",
+          "settings": {
+            "text": "Paiement 100 % sécurisé"
+          }
+        },
+        "announcement-3": {
+          "type": "announcement",
+          "settings": {
+            "text": "Nouveautés chiens & chats chaque semaine",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "announcement-1",
+        "announcement-2",
+        "announcement-3"
+      ],
+      "settings": {
+        "style": "rotate",
+        "speed": 5
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "main-menu",
+        "hide_on_scroll": true,
+        "transparent": false,
+        "search_placeholder": "Rechercher un collier, une gamelle, un jouet…"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

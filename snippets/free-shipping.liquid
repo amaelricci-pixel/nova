@@ -1,0 +1,28 @@
+{%- comment -%}
+  Barre de progression vers la livraison gratuite.
+  Le seuil est défini dans Paramètres du thème > Panier, dans la devise principale.
+  Elle est masquée pour les autres devises (pas de taux de conversion disponible en Liquid).
+{%- endcomment -%}
+{%- if settings.cart_show_free_shipping and settings.free_shipping_threshold > 0 and cart.item_count > 0 and cart.currency.iso_code == shop.currency -%}
+  {%- liquid
+    assign threshold = settings.free_shipping_threshold | times: 100
+    assign remaining = threshold | minus: cart.total_price
+    assign progress = cart.total_price | times: 100.0 | divided_by: threshold
+    if progress > 100
+      assign progress = 100
+    endif
+  -%}
+  <div class="free-shipping">
+    <p>
+      {%- if remaining > 0 -%}
+        {%- assign remaining_money = remaining | money -%}
+        {{ 'cart.free_shipping.remaining_html' | t: amount: remaining_money }}
+      {%- else -%}
+        <strong>{{ 'cart.free_shipping.unlocked' | t }}</strong>
+      {%- endif -%}
+    </p>
+    <div class="free-shipping__bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ progress | round }}">
+      <span style="--progress: {{ progress }}%;"></span>
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,43 @@
+<div class="section{% if section.settings.dark %} section--dark{% else %} section--surface{% endif %}">
+  <div class="page-width">
+    <div class="newsletter" data-reveal>
+      <div style="display: grid; gap: 14px;">
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2>{{ section.settings.heading }}</h2>
+        {%- if section.settings.text != blank -%}<div class="text-muted">{{ section.settings.text }}</div>{%- endif -%}
+      </div>
+      <div>
+        {%- form 'customer', id: 'NewsletterSection' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div class="newsletter__form">
+            <label for="NewsletterEmail-{{ section.id }}" class="visually-hidden">{{ 'newsletter.label' | t }}</label>
+            <input id="NewsletterEmail-{{ section.id }}" type="email" name="contact[email]" class="input" required autocomplete="email" placeholder="{{ 'newsletter.placeholder' | t }}">
+            <button type="submit" class="button button--accent">{{ 'newsletter.button' | t }}</button>
+          </div>
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success mt-2" role="status">{{ 'newsletter.success' | t }}</p>
+          {%- elsif form.errors -%}
+            <p class="form-message form-message--error mt-2" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+          {%- endif -%}
+          {%- if section.settings.note != blank -%}<p class="newsletter__note">{{ section.settings.note }}</p>{%- endif -%}
+        {%- endform -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "tag": "section",
+  "class": "section-newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Newsletter" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Les nouveautés en avant-première" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Inscrivez-vous pour recevoir nos offres et nouveautés.</p>" },
+    { "type": "text", "id": "note", "label": "Mention légale", "default": "Désinscription possible à tout moment." },
+    { "type": "checkbox", "id": "dark", "label": "Fond noir", "default": true }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

@@ -1,0 +1,186 @@
+{%- liquid
+  assign sort_by = collection.sort_by | default: collection.default_sort_by
+  assign has_filters = false
+  if section.settings.enable_filtering and collection.filters.size > 0
+    assign has_filters = true
+  endif
+-%}
+
+{%- comment -%} En-tête de collection {%- endcomment -%}
+<div class="collection-hero{% if section.settings.hero_style == 'light' %} collection-hero--light{% endif %}">
+  {%- if section.settings.show_image and collection.image -%}
+    <div class="collection-hero__media">
+      {{ collection.image | image_url: width: 2000 | image_tag: loading: 'eager', widths: '750, 1100, 1500, 2000', sizes: '100vw', alt: collection.image.alt | escape }}
+    </div>
+  {%- endif -%}
+  <div class="page-width">
+    <div class="collection-hero__inner">
+      <nav aria-label="{{ 'accessibility.breadcrumbs' | t }}">
+        <ol class="breadcrumbs" role="list">
+          <li><a href="{{ routes.root_url }}">{{ 'general.navigation.home' | t }}</a></li>
+          <li><a href="{{ routes.collections_url }}">{{ 'collections.general.title' | t }}</a></li>
+          <li aria-current="page">{{ collection.title | escape }}</li>
+        </ol>
+      </nav>
+      <h1 data-reveal>{{ collection.title | escape }}</h1>
+      {%- if section.settings.show_description and collection.description != blank -%}
+        <div class="rte" data-reveal style="--reveal-index: 1; opacity: .8;">{{ collection.description }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+<collection-filters class="section section--tight" data-section="{{ section.id }}" style="display: block;">
+  <div class="page-width">
+    {%- paginate collection.products by section.settings.products_per_page -%}
+      <div class="collection-toolbar">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          {%- if has_filters -%}
+            <button type="button" class="button button--outline button--small facets-drawer-toggle{% if section.settings.filter_layout == 'drawer' %}{% else %} hide-desktop{% endif %}" data-open-drawer="FacetsDrawer-{{ section.id }}">
+              {% render 'icon', name: 'filter' %} {{ 'collections.filters.title' | t }}
+            </button>
+          {%- endif -%}
+          <p class="collection-toolbar__count" id="ProductCount-{{ section.id }}">
+            {{ 'collections.general.products_count' | t: count: collection.products_count }}
+          </p>
+        </div>
+        {%- if section.settings.enable_sorting -%}
+          <div class="collection-toolbar__actions">
+            <label for="SortBy-{{ section.id }}" class="visually-hidden">{{ 'collections.sorting.title' | t }}</label>
+            <select id="SortBy-{{ section.id }}" name="sort_by" class="select" form="SortForm-{{ section.id }}">
+              {%- for option in collection.sort_options -%}
+                <option value="{{ option.value | escape }}"{% if option.value == sort_by %} selected{% endif %}>{{ option.name | escape }}</option>
+              {%- endfor -%}
+            </select>
+            <form id="SortForm-{{ section.id }}" action="{{ collection.url }}" method="get" hidden></form>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="collection-layout{% if has_filters and section.settings.filter_layout == 'sidebar' %} collection-layout--sidebar{% endif %}">
+        {%- if has_filters and section.settings.filter_layout == 'sidebar' -%}
+          <aside class="collection-sidebar" id="FacetsSidebar-{{ section.id }}" aria-label="{{ 'collections.filters.title' | t }}">
+            {% render 'facets', results: collection, id_prefix: 'Sidebar' %}
+          </aside>
+        {%- endif -%}
+
+        <div>
+          <div id="ActiveFacets-{{ section.id }}">
+            {%- liquid
+              assign active_count = 0
+              for filter in collection.filters
+                assign active_count = active_count | plus: filter.active_values.size
+                if filter.min_value.value or filter.max_value.value
+                  assign active_count = active_count | plus: 1
+                endif
+              endfor
+            -%}
+            {%- if active_count > 0 -%}
+              <div class="facets__active">
+                {%- for filter in collection.filters -%}
+                  {%- for value in filter.active_values -%}
+                    <a href="{{ value.url_to_remove }}" class="facet-pill" data-facet-link>{{ value.label | escape }} {% render 'icon', name: 'close', class: 'icon' %}</a>
+                  {%- endfor -%}
+                  {%- if filter.type == 'price_range' -%}
+                    {%- if filter.min_value.value or filter.max_value.value -%}
+                      <a href="{{ filter.url_to_remove }}" class="facet-pill" data-facet-link>
+                        {{ filter.min_value.value | default: 0 | money }} – {{ filter.max_value.value | default: filter.range_max | money }}
+                        {% render 'icon', name: 'close', class: 'icon' %}
+                      </a>
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                <a href="{{ collection.url }}?sort_by={{ sort_by }}" class="facet-pill" data-facet-link style="background: transparent; text-decoration: underline;">{{ 'collections.filters.clear_all' | t }}</a>
+              </div>
+            {%- endif -%}
+          </div>
+
+          <div class="collection-products" id="CollectionProducts-{{ section.id }}">
+            {%- if collection.products.size > 0 -%}
+              <ul class="grid" role="list" style="--cols: {{ section.settings.columns }}; --cols-tablet: {% if has_filters and section.settings.filter_layout == 'sidebar' %}2{% else %}3{% endif %};">
+                {%- for product in collection.products -%}
+                  {%- liquid
+                    assign lazy_load = true
+                    if forloop.index <= 4
+                      assign lazy_load = false
+                    endif
+                  -%}
+                  <li>{% render 'product-card', product: product, index: forloop.index0, lazy: lazy_load %}</li>
+                {%- endfor -%}
+              </ul>
+              {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate %}
+              {%- endif -%}
+            {%- else -%}
+              <div class="empty-state">
+                <p class="h3">{{ 'collections.general.no_matches' | t }}</p>
+                <a href="{{ collection.url }}" class="button" data-facet-link>{{ 'collections.filters.clear_all' | t }}</a>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endpaginate -%}
+  </div>
+
+  {%- if has_filters -%}
+    <nova-drawer id="FacetsDrawer-{{ section.id }}" class="drawer drawer--left" aria-hidden="true">
+      <div class="drawer__overlay" data-close></div>
+      <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'collections.filters.title' | t }}" tabindex="-1">
+        <div class="drawer__header">
+          <p class="drawer__title">{{ 'collections.filters.title' | t }}</p>
+          <button type="button" class="icon-button" data-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+        </div>
+        <div class="drawer__body" id="FacetsDrawerBody-{{ section.id }}">
+          {% render 'facets', results: collection, id_prefix: 'Drawer' %}
+        </div>
+        <div class="drawer__footer">
+          <button type="button" class="button button--full" data-close>{{ 'collections.filters.see_results' | t }}</button>
+        </div>
+      </div>
+    </nova-drawer>
+  {%- endif -%}
+</collection-filters>
+
+{% schema %}
+{
+  "name": "Produits de la collection",
+  "tag": "section",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "select",
+      "id": "hero_style",
+      "label": "Style de l'en-tête",
+      "options": [
+        { "value": "dark", "label": "Sombre" },
+        { "value": "light", "label": "Clair" }
+      ],
+      "default": "dark"
+    },
+    { "type": "checkbox", "id": "show_image", "label": "Afficher l'image de la collection", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "Afficher la description", "default": true },
+    { "type": "range", "id": "products_per_page", "label": "Produits par page", "min": 8, "max": 48, "step": 4, "default": 24 },
+    { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    { "type": "header", "content": "Filtres et tri" },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Activer les filtres",
+      "default": true,
+      "info": "Configurez les filtres (animal, taille, couleur, prix…) avec l'application gratuite Shopify Search & Discovery."
+    },
+    {
+      "type": "select",
+      "id": "filter_layout",
+      "label": "Disposition des filtres (ordinateur)",
+      "options": [
+        { "value": "sidebar", "label": "Colonne latérale" },
+        { "value": "drawer", "label": "Tiroir" }
+      ],
+      "default": "sidebar"
+    },
+    { "type": "checkbox", "id": "enable_sorting", "label": "Activer le tri", "default": true }
+  ]
+}
+{% endschema %}

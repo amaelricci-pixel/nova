@@ -1,0 +1,39 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="marquee{% if section.settings.dark %} section--dark{% endif %}" style="--marquee-speed: {{ section.settings.speed }}s;">
+    <div class="marquee__track">
+      {%- for i in (1..4) -%}
+        {%- for block in section.blocks -%}
+          <span class="marquee__item"{% if i > 1 %} aria-hidden="true"{% else %} {{ block.shopify_attributes }}{% endif %}>{{ block.settings.text }}</span>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Bandeau défilant",
+  "tag": "section",
+  "class": "section-marquee",
+  "settings": [
+    { "type": "range", "id": "speed", "label": "Durée d'un cycle", "min": 10, "max": 80, "step": 5, "unit": "s", "default": 40 },
+    { "type": "checkbox", "id": "dark", "label": "Fond noir", "default": false }
+  ],
+  "blocks": [
+    { "type": "item", "name": "Texte", "settings": [{ "type": "text", "id": "text", "label": "Texte", "default": "Chiens" }] }
+  ],
+  "presets": [
+    {
+      "name": "Bandeau défilant",
+      "blocks": [
+        { "type": "item", "settings": { "text": "Chiens" } },
+        { "type": "item", "settings": { "text": "Chats" } },
+        { "type": "item", "settings": { "text": "Promenade" } },
+        { "type": "item", "settings": { "text": "Couchage" } },
+        { "type": "item", "settings": { "text": "Jouets" } },
+        { "type": "item", "settings": { "text": "Hygiène" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

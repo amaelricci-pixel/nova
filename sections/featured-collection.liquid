@@ -1,0 +1,91 @@
+{%- liquid
+  assign collection = section.settings.collection
+  assign limit = section.settings.products_to_show
+-%}
+<div class="section{% if section.settings.background == 'surface' %} section--surface{% elsif section.settings.background == 'dark' %} section--dark{% endif %}">
+  <div class="page-width">
+    <div class="section-header{% if section.settings.align == 'center' %} section-header--center{% endif %}" data-reveal>
+      <div class="section-header__text">
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        {%- if section.settings.heading != blank -%}<h2>{{ section.settings.heading }}</h2>{%- endif -%}
+        {%- if section.settings.text != blank -%}<div class="text-muted">{{ section.settings.text }}</div>{%- endif -%}
+      </div>
+      {%- if section.settings.show_view_all and collection != blank -%}
+        <a href="{{ collection.url }}" class="link">{{ 'general.navigation.view_all' | t }} {% render 'icon', name: 'arrow-right' %}</a>
+      {%- endif -%}
+    </div>
+
+    <div
+      class="{% if section.settings.layout == 'carousel' %}scroller scroller--desktop-grid{% else %}grid{% endif %}"
+      style="--cols: {{ section.settings.columns }}; --cols-tablet: 3; --cols-mobile: 2;"
+      role="list"
+    >
+      {%- if collection != blank and collection.products_count > 0 -%}
+        {%- for product in collection.products limit: limit -%}
+          <div role="listitem">{% render 'product-card', product: product, index: forloop.index0 %}</div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..limit) -%}
+          <div role="listitem" class="card" data-reveal>
+            {%- assign ph = i | modulo: 6 | plus: 1 -%}
+            {%- assign ph_name = 'product-' | append: ph -%}
+            <div class="media media--square">{{ ph_name | placeholder_svg_tag: 'placeholder-svg' }}</div>
+            <div class="card__info">
+              <h3 class="card__title">{{ 'sections.placeholder.product_title' | t }}</h3>
+              <div class="price"><span class="price__current">{{ 2900 | money }}</span></div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection en vedette",
+  "tag": "section",
+  "class": "section-featured-collection",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Sélection" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Les incontournables" },
+    { "type": "richtext", "id": "text", "label": "Texte" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_to_show", "label": "Nombre de produits", "min": 2, "max": 16, "step": 1, "default": 8 },
+    { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 5, "step": 1, "default": 4 },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Disposition sur mobile",
+      "options": [
+        { "value": "grid", "label": "Grille" },
+        { "value": "carousel", "label": "Carrousel (glisser)" }
+      ],
+      "default": "carousel"
+    },
+    {
+      "type": "select",
+      "id": "align",
+      "label": "Alignement du titre",
+      "options": [
+        { "value": "left", "label": "Gauche" },
+        { "value": "center", "label": "Centré" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "default", "label": "Blanc" },
+        { "value": "surface", "label": "Gris clair" },
+        { "value": "dark", "label": "Noir" }
+      ],
+      "default": "default"
+    },
+    { "type": "checkbox", "id": "show_view_all", "label": "Lien « Tout voir »", "default": true }
+  ],
+  "presets": [{ "name": "Collection en vedette" }]
+}
+{% endschema %}

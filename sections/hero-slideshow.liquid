@@ -1,0 +1,184 @@
+{%- liquid
+  assign slides = section.blocks
+  assign slide_count = slides.size
+-%}
+<nova-slideshow class="slideshow" data-autoplay="{% if section.settings.autoplay and slide_count > 1 %}{{ section.settings.autoplay_speed }}{% else %}0{% endif %}" style="--autoplay: {{ section.settings.autoplay_speed }}s;" aria-roledescription="carousel" aria-label="{{ section.settings.accessibility_label | escape }}">
+  <div class="slideshow__track">
+    {%- for block in slides -%}
+      <div
+        class="hero hero--{{ section.settings.height }}{% if block.settings.alignment == 'center' %} hero--center{% endif %}{% if forloop.first %} is-active{% endif %}"
+        data-slide
+        style="--overlay: {{ section.settings.overlay | divided_by: 100.0 }};"
+        {% if slide_count > 1 %}role="group" aria-roledescription="slide" aria-label="{{ forloop.index }} / {{ slide_count }}"{% endif %}
+        {{ block.shopify_attributes }}
+      >
+        <div class="hero__media">
+          {%- liquid
+            assign loading = 'lazy'
+            assign priority = 'auto'
+            if forloop.first and section.index <= 2
+              assign loading = 'eager'
+              assign priority = 'high'
+            endif
+          -%}
+          {%- if block.settings.video != blank -%}
+            {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, playsinline: true, controls: false, image_size: '1920x' }}
+          {%- elsif block.settings.image != blank -%}
+            <picture>
+              {%- if block.settings.image_mobile != blank -%}
+                <source media="(max-width: 749px)" srcset="{{ block.settings.image_mobile | image_url: width: 750 }} 750w, {{ block.settings.image_mobile | image_url: width: 1100 }} 1100w">
+              {%- endif -%}
+              {{
+                block.settings.image
+                | image_url: width: 2400
+                | image_tag:
+                  loading: loading,
+                  fetchpriority: priority,
+                  widths: '750, 1100, 1500, 1920, 2400',
+                  sizes: '100vw',
+                  alt: block.settings.image.alt | escape
+              }}
+            </picture>
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+        <div class="hero__overlay"></div>
+        {%- if section.settings.show_grid -%}<div class="hero__grid-lines" aria-hidden="true"></div>{%- endif -%}
+        <div class="hero__orb" aria-hidden="true"></div>
+
+        <div class="page-width hero__inner">
+          <div class="hero__content">
+            {%- if block.settings.eyebrow != blank -%}
+              <span class="eyebrow" data-reveal>{{ block.settings.eyebrow }}</span>
+            {%- endif -%}
+            {%- if block.settings.heading != blank -%}
+              <h2 class="display hero__heading" data-reveal style="--reveal-index: 1;">{{ block.settings.heading }}</h2>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="hero__text" data-reveal style="--reveal-index: 2;">{{ block.settings.text }}</div>
+            {%- endif -%}
+            {%- if block.settings.button_label != blank or block.settings.button_label_2 != blank -%}
+              <div class="hero__buttons" data-reveal style="--reveal-index: 3;">
+                {%- if block.settings.button_label != blank -%}
+                  <a href="{{ block.settings.button_link | default: routes.all_products_collection_url }}" class="button button--accent">
+                    {{ block.settings.button_label | escape }} {% render 'icon', name: 'arrow-right' %}
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a href="{{ block.settings.button_link_2 | default: routes.all_products_collection_url }}" class="button button--outline-light">
+                    {{ block.settings.button_label_2 | escape }}
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  {%- if slide_count > 1 -%}
+    <div class="slideshow__controls">
+      <div class="page-width"{% if slides.first.settings.alignment == 'center' %} style="justify-content: center;"{% endif %}>
+        {%- for block in slides -%}
+          <button type="button" class="slideshow__dot" aria-label="{{ 'sections.slideshow.go_to' | t: index: forloop.index }}"></button>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</nova-slideshow>
+
+{% schema %}
+{
+  "name": "Bannière / diaporama",
+  "tag": "section",
+  "class": "section-hero",
+  "max_blocks": 5,
+  "settings": [
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Hauteur",
+      "options": [
+        { "value": "small", "label": "Petite" },
+        { "value": "medium", "label": "Moyenne" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "range",
+      "id": "overlay",
+      "label": "Assombrissement de l'image",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 55
+    },
+    {
+      "type": "checkbox",
+      "id": "show_grid",
+      "label": "Grille futuriste en surimpression",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Défilement automatique",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Durée par diapositive",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "accessibility_label",
+      "label": "Description pour l'accessibilité",
+      "default": "Offres à la une"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Diapositive",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image (ordinateur)", "info": "2400 x 1200 px recommandé" },
+        { "type": "image_picker", "id": "image_mobile", "label": "Image (mobile)", "info": "Optionnel — 900 x 1200 px recommandé" },
+        { "type": "video", "id": "video", "label": "Vidéo de fond", "info": "Remplace l'image si renseignée. Sans son, en boucle." },
+        { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Nouvelle collection" },
+        { "type": "inline_richtext", "id": "heading", "label": "Titre", "info": "Mettez un mot en italique pour lui appliquer le dégradé bleu.", "default": "Le confort <em>premium</em> pour vos animaux" },
+        { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Colliers, harnais, couchages et jouets pensés pour le quotidien de votre chien ou de votre chat.</p>" },
+        { "type": "text", "id": "button_label", "label": "Bouton principal", "default": "Découvrir" },
+        { "type": "url", "id": "button_link", "label": "Lien du bouton principal" },
+        { "type": "text", "id": "button_label_2", "label": "Bouton secondaire", "default": "Voir les offres" },
+        { "type": "url", "id": "button_link_2", "label": "Lien du bouton secondaire" },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Alignement",
+          "options": [
+            { "value": "left", "label": "Gauche" },
+            { "value": "center", "label": "Centré" }
+          ],
+          "default": "left"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Bannière / diaporama",
+      "blocks": [{ "type": "slide" }]
+    }
+  ]
+}
+{% endschema %}

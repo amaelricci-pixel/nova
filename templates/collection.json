@@ -1,0 +1,56 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {}
+    },
+    "features": {
+      "type": "features",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "icon": "truck",
+            "title": "Livraison suivie",
+            "text": "Numéro de suivi pour chaque commande"
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "icon": "lock",
+            "title": "Paiement sécurisé",
+            "text": "Transactions chiffrées via Shopify"
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "icon": "return",
+            "title": "Retours simplifiés",
+            "text": "Voir notre politique de retour"
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "icon": "support",
+            "title": "Service client",
+            "text": "Une équipe à votre écoute"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "features"
+  ]
+}

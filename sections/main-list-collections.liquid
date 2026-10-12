@@ -1,0 +1,72 @@
+<div class="page-width">
+  <div class="page-header">
+    {%- assign page_heading = section.settings.title -%}
+    {%- if page_heading == blank -%}{%- assign page_heading = 'collections.general.title' | t -%}{%- endif -%}
+    <h1 data-reveal>{{ page_heading | escape }}</h1>
+  </div>
+</div>
+<div class="section section--flush-top">
+  <div class="page-width">
+    {%- liquid
+      case section.settings.sort
+        when 'products_high', 'products_low'
+          assign list = collections | sort: 'all_products_count'
+        when 'date', 'date_reversed'
+          assign list = collections | sort: 'published_at'
+        else
+          assign list = collections
+      endcase
+      if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed'
+        assign list = list | reverse
+      endif
+    -%}
+    <ul class="grid" role="list" style="--cols: {{ section.settings.columns }};">
+      {%- for collection in list -%}
+        <li data-reveal style="--reveal-index: {{ forloop.index0 | modulo: 8 }};">
+          <a href="{{ collection.url }}" class="collection-card">
+            <div class="media media--portrait">
+              {%- if collection.featured_image -%}
+                {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 1100px) 25vw, 50vw', alt: collection.title | escape }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="collection-card__overlay"></div>
+            <div class="collection-card__info">
+              <div>
+                <h2 class="collection-card__title">{{ collection.title | escape }}</h2>
+                <span class="collection-card__count">{{ 'sections.collection_list.products_count' | t: count: collection.products_count }}</span>
+              </div>
+              <span class="collection-card__arrow">{% render 'icon', name: 'arrow-up-right' %}</span>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Liste des collections",
+  "tag": "section",
+  "class": "section-list-collections",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Toutes les catégories" },
+    {
+      "type": "select",
+      "id": "sort",
+      "label": "Trier par",
+      "options": [
+        { "value": "alphabetical", "label": "Ordre alphabétique" },
+        { "value": "products_high", "label": "Nombre de produits (décroissant)" },
+        { "value": "products_low", "label": "Nombre de produits (croissant)" },
+        { "value": "date", "label": "Date (ancienne à récente)" },
+        { "value": "date_reversed", "label": "Date (récente à ancienne)" }
+      ],
+      "default": "alphabetical"
+    },
+    { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 5, "step": 1, "default": 4 }
+  ]
+}
+{% endschema %}

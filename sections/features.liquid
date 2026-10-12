@@ -1,0 +1,78 @@
+<div class="section section--tight">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header section-header--center" data-reveal>
+        <div class="section-header__text"><h2 class="h3">{{ section.settings.heading }}</h2></div>
+      </div>
+    {%- endif -%}
+    <ul class="features" role="list" style="--cols: {{ section.blocks.size | at_most: 4 | at_least: 1 }};">
+      {%- for block in section.blocks -%}
+        <li class="feature" data-reveal style="--reveal-index: {{ forloop.index0 }};" {{ block.shopify_attributes }}>
+          <span class="feature__icon">{% render 'icon', name: block.settings.icon %}</span>
+          <div>
+            <p class="feature__title">{{ block.settings.title }}</p>
+            {%- if block.settings.text != blank -%}<p class="feature__text">{{ block.settings.text }}</p>{%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Avantages / réassurance",
+  "tag": "section",
+  "class": "section-features",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Titre" },
+    {
+      "type": "paragraph",
+      "content": "Indiquez uniquement des engagements réels (délais, retours, paiement) conformes à vos conditions générales de vente."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Avantage",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "truck", "label": "Camion" },
+            { "value": "return", "label": "Retour" },
+            { "value": "shield", "label": "Bouclier" },
+            { "value": "lock", "label": "Cadenas" },
+            { "value": "support", "label": "Support" },
+            { "value": "paw", "label": "Patte" },
+            { "value": "heart", "label": "Cœur" },
+            { "value": "bone", "label": "Os" },
+            { "value": "leaf", "label": "Feuille" },
+            { "value": "gift", "label": "Cadeau" },
+            { "value": "package", "label": "Colis" },
+            { "value": "clock", "label": "Horloge" },
+            { "value": "bolt", "label": "Éclair" }
+          ],
+          "default": "truck"
+        },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Livraison suivie" },
+        { "type": "text", "id": "text", "label": "Texte", "default": "Numéro de suivi pour chaque commande" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avantages / réassurance",
+      "blocks": [
+        { "type": "feature", "settings": { "icon": "truck", "title": "Livraison suivie", "text": "Numéro de suivi pour chaque commande" } },
+        { "type": "feature", "settings": { "icon": "lock", "title": "Paiement sécurisé", "text": "Transactions chiffrées via Shopify" } },
+        { "type": "feature", "settings": { "icon": "return", "title": "Retours simplifiés", "text": "Voir notre politique de retour" } },
+        { "type": "feature", "settings": { "icon": "support", "title": "Service client", "text": "Une équipe à votre écoute" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

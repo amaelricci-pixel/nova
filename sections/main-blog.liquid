@@ -1,0 +1,41 @@
+<div class="page-width">
+  <div class="page-header">
+    <h1 data-reveal>{{ blog.title | escape }}</h1>
+  </div>
+  <div class="section section--flush-top">
+    {%- paginate blog.articles by 9 -%}
+      <ul class="grid" role="list" style="--cols: 3; --cols-mobile: 1;">
+        {%- for article in blog.articles -%}
+          <li>
+            <a href="{{ article.url }}" class="article-card" data-reveal style="--reveal-index: {{ forloop.index0 | modulo: 6 }};">
+              <div class="media media--landscape">
+                {%- if article.image -%}
+                  {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400, 600, 900', sizes: '(min-width: 1100px) 33vw, 100vw', alt: article.image.alt | escape }}
+                {%- else -%}
+                  {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              <span class="article-card__meta">{{ article.published_at | time_tag: format: 'date' }}</span>
+              <h2 class="h4">{{ article.title | escape }}</h2>
+              {%- if section.settings.show_excerpt -%}
+                <p class="text-muted">{{ article.excerpt_or_content | strip_html | truncate: 140 }}</p>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate %}{%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Articles du blog",
+  "tag": "section",
+  "class": "section-main-blog",
+  "settings": [
+    { "type": "checkbox", "id": "show_excerpt", "label": "Afficher l'extrait", "default": true }
+  ]
+}
+{% endschema %}

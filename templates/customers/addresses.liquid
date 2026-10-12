@@ -1,0 +1,29 @@
+<div class="page-width">
+  <div class="account">
+    <a href="{{ routes.account_url }}" class="link">{% render 'icon', name: 'arrow-left' %} {{ 'customer.account.return' | t }}</a>
+    <h1 class="h2">{{ 'customer.addresses.title' | t }}</h1>
+    {%- paginate customer.addresses by 10 -%}
+      {%- for address in customer.addresses -%}
+        <div style="padding: 20px; border: 1px solid var(--color-border); border-radius: var(--radius);">
+          {%- if address == customer.default_address -%}<span class="badge">{{ 'customer.addresses.default' | t }}</span>{%- endif -%}
+          <div class="mt-1">{{ address | format_address }}</div>
+          <details class="mt-2">
+            <summary class="link" style="cursor: pointer;">{{ 'customer.addresses.edit' | t }}</summary>
+            {%- form 'customer_address', address, class: 'mt-2' -%}
+              {% render 'address-fields', form: form, id: address.id %}
+              <button type="submit" class="button">{{ 'customer.addresses.update' | t }}</button>
+            {%- endform -%}
+          </details>
+        </div>
+      {%- endfor -%}
+      {%- if paginate.pages > 1 -%}{% render 'pagination', paginate: paginate %}{%- endif -%}
+    {%- endpaginate -%}
+    <details>
+      <summary class="button button--outline" style="list-style: none;">{{ 'customer.addresses.add' | t }}</summary>
+      {%- form 'customer_address', customer.new_address, class: 'mt-3' -%}
+        {% render 'address-fields', form: form, id: 'new' %}
+        <button type="submit" class="button button--accent">{{ 'customer.addresses.add' | t }}</button>
+      {%- endform -%}
+    </details>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="page-width">
+  <div class="account">
+    <h1 class="h2">{{ 'customer.activate.title' | t }}</h1>
+    {%- form 'activate_customer_password' -%}
+      {%- if form.errors -%}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+      <input class="input" type="password" name="customer[password]" autocomplete="new-password" placeholder="{{ 'customer.login.password' | t }}" aria-label="{{ 'customer.login.password' | t }}">
+      <input class="input" type="password" name="customer[password_confirmation]" autocomplete="new-password" placeholder="{{ 'customer.activate.confirm' | t }}" aria-label="{{ 'customer.activate.confirm' | t }}">
+      <button type="submit" class="button button--accent button--full">{{ 'customer.activate.submit' | t }}</button>
+      <button type="submit" name="decline" class="button button--outline button--full">{{ 'customer.activate.decline' | t }}</button>
+    {%- endform -%}
+  </div>
+</div>

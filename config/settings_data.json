@@ -1,0 +1,22 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "color_background": "#FFFFFF",
+      "color_surface": "#F4F5F7",
+      "color_text": "#0A0A0B",
+      "color_muted": "#6B6F76",
+      "color_border": "#E3E5E8",
+      "color_accent": "#1F6BFF",
+      "color_accent_contrast": "#FFFFFF",
+      "color_dark": "#0A0A0B",
+      "color_dark_text": "#F5F6F8",
+      "color_sale": "#1F6BFF",
+      "color_success": "#14A44D",
+      "color_error": "#E5383B",
+      "cart_type": "drawer",
+      "animations_enabled": true,
+      "glow_effects": true
+    }
+  }
+}

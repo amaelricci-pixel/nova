@@ -1,0 +1,29 @@
+{%- comment -%}
+  Section générique pour les blocs d'applications (avis clients, Instagram, etc.).
+{%- endcomment -%}
+<div class="{% if section.settings.include_margins %}section{% endif %}">
+  <div class="{% if section.settings.include_margins %}page-width{% endif %}">
+    {%- if section.settings.heading != blank -%}
+      <div class="section-header section-header--center" data-reveal>
+        <div class="section-header__text"><h2>{{ section.settings.heading }}</h2></div>
+      </div>
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+      {% render block %}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Applications",
+  "tag": "section",
+  "class": "section-apps",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Titre" },
+    { "type": "checkbox", "id": "include_margins", "label": "Marges du thème", "default": true }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "presets": [{ "name": "Applications" }]
+}
+{% endschema %}

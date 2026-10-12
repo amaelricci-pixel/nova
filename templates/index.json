@@ -1,0 +1,343 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-slideshow",
+      "blocks": {
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Nouvelle collection",
+            "heading": "Le confort <em>premium</em> pour vos animaux",
+            "text": "<p>Colliers, harnais, couchages et jouets pensés pour le quotidien de votre chien ou de votre chat.</p>",
+            "button_label": "Découvrir",
+            "button_link": "shopify://collections/all",
+            "button_label_2": "Voir les offres",
+            "alignment": "left"
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "Promenade",
+            "heading": "Chaque sortie, <em>en toute sécurité</em>",
+            "text": "<p>Harnais, laisses et accessoires lumineux pour des balades sereines, de jour comme de nuit.</p>",
+            "button_label": "Équipement promenade",
+            "alignment": "left"
+          }
+        }
+      },
+      "block_order": [
+        "slide-1",
+        "slide-2"
+      ],
+      "settings": {
+        "height": "large",
+        "overlay": 55,
+        "show_grid": true,
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "accessibility_label": "Offres à la une"
+      }
+    },
+    "features": {
+      "type": "features",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "icon": "truck",
+            "title": "Livraison suivie",
+            "text": "Numéro de suivi pour chaque commande"
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "icon": "lock",
+            "title": "Paiement sécurisé",
+            "text": "Transactions chiffrées via Shopify"
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "icon": "return",
+            "title": "Retours simplifiés",
+            "text": "Voir notre politique de retour"
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "icon": "support",
+            "title": "Service client",
+            "text": "Une équipe à votre écoute"
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4"
+      ],
+      "settings": {}
+    },
+    "categories": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": {
+          "type": "collection",
+          "settings": {
+            "title": "Chiens"
+          }
+        },
+        "c2": {
+          "type": "collection",
+          "settings": {
+            "title": "Chats"
+          }
+        },
+        "c3": {
+          "type": "collection",
+          "settings": {
+            "title": "Promenade"
+          }
+        },
+        "c4": {
+          "type": "collection",
+          "settings": {
+            "title": "Couchage"
+          }
+        }
+      },
+      "block_order": [
+        "c1",
+        "c2",
+        "c3",
+        "c4"
+      ],
+      "settings": {
+        "eyebrow": "Catégories",
+        "heading": "Achetez par univers",
+        "style": "portrait",
+        "columns": 4,
+        "show_count": true,
+        "show_view_all": true,
+        "align": "left",
+        "background": "default"
+      }
+    },
+    "bestsellers": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Sélection",
+        "heading": "Les incontournables",
+        "products_to_show": 8,
+        "columns": 4,
+        "layout": "carousel",
+        "align": "left",
+        "background": "surface",
+        "show_view_all": true
+      }
+    },
+    "promo": {
+      "type": "promo-banner",
+      "settings": {
+        "eyebrow": "Offre limitée",
+        "heading": "-15 % sur votre première commande",
+        "text": "<p>Utilisez le code ci-dessous lors du paiement.</p>",
+        "button_label": "J'en profite",
+        "countdown_label": "Se termine dans",
+        "hide_when_expired": true
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "m1": {
+          "type": "item",
+          "settings": {
+            "text": "Chiens"
+          }
+        },
+        "m2": {
+          "type": "item",
+          "settings": {
+            "text": "Chats"
+          }
+        },
+        "m3": {
+          "type": "item",
+          "settings": {
+            "text": "Promenade"
+          }
+        },
+        "m4": {
+          "type": "item",
+          "settings": {
+            "text": "Couchage"
+          }
+        },
+        "m5": {
+          "type": "item",
+          "settings": {
+            "text": "Jouets"
+          }
+        },
+        "m6": {
+          "type": "item",
+          "settings": {
+            "text": "Hygiène"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6"
+      ],
+      "settings": {
+        "speed": 40,
+        "dark": false
+      }
+    },
+    "new-arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "Nouveautés",
+        "heading": "Fraîchement arrivés",
+        "products_to_show": 4,
+        "columns": 4,
+        "layout": "carousel",
+        "align": "left",
+        "background": "default",
+        "show_view_all": true
+      }
+    },
+    "story": {
+      "type": "image-with-text",
+      "blocks": {
+        "e": {
+          "type": "eyebrow",
+          "settings": {
+            "text": "L'esprit NOVA"
+          }
+        },
+        "h": {
+          "type": "heading",
+          "settings": {
+            "heading": "Pensé pour eux, choisi par vous"
+          }
+        },
+        "t": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Nous sélectionnons des accessoires pratiques, durables et esthétiques pour accompagner votre animal au quotidien.</p>"
+          }
+        },
+        "l1": {
+          "type": "list_item",
+          "settings": {
+            "text": "Produits sélectionnés et testés"
+          }
+        },
+        "l2": {
+          "type": "list_item",
+          "settings": {
+            "text": "Pour chiens et chats de toutes tailles"
+          }
+        },
+        "l3": {
+          "type": "list_item",
+          "settings": {
+            "text": "Guide des tailles sur chaque fiche"
+          }
+        },
+        "b": {
+          "type": "button",
+          "settings": {
+            "label": "Découvrir la boutique",
+            "link": "shopify://collections/all",
+            "style": "accent"
+          }
+        }
+      },
+      "block_order": [
+        "e",
+        "h",
+        "t",
+        "l1",
+        "l2",
+        "l3",
+        "b"
+      ],
+      "settings": {
+        "ratio": "portrait",
+        "layout": "left",
+        "background": "dark"
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Quels sont les délais de livraison ?",
+            "answer": "<p>Indiquez ici vos délais réels, tels que définis avec votre fournisseur.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "Comment choisir la bonne taille ?",
+            "answer": "<p>Chaque fiche produit propose un guide des tailles. Mesurez le tour de cou et le tour de poitrail de votre animal.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Puis-je retourner un article ?",
+            "answer": "<p>Consultez notre politique de retour pour connaître les conditions.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3"
+      ],
+      "settings": {
+        "eyebrow": "FAQ",
+        "heading": "Questions fréquentes",
+        "open_first": false
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "Newsletter",
+        "heading": "Les nouveautés en avant-première",
+        "text": "<p>Inscrivez-vous pour recevoir nos offres et nouveautés.</p>",
+        "note": "Désinscription possible à tout moment.",
+        "dark": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "features",
+    "categories",
+    "bestsellers",
+    "promo",
+    "marquee",
+    "new-arrivals",
+    "story",
+    "faq",
+    "newsletter"
+  ]
+}

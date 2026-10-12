@@ -1,0 +1,86 @@
+{%- liquid
+  assign end_date = section.settings.end_date | strip
+  assign has_countdown = false
+  if end_date != blank
+    assign now = 'now' | date: '%s' | plus: 0
+    assign end_ts = end_date | date: '%s' | plus: 0
+    if end_ts > now
+      assign has_countdown = true
+    endif
+  endif
+-%}
+{%- unless section.settings.hide_when_expired and end_date != blank and has_countdown == false -%}
+  <div class="section{% if section.settings.full_width %} section--flush{% endif %}">
+    <div class="page-width">
+      <div class="promo" data-reveal>
+        {%- if section.settings.image != blank -%}
+          <div class="promo__media">
+            {{ section.settings.image | image_url: width: 2000 | image_tag: loading: 'lazy', widths: '750, 1100, 1500, 2000', sizes: '100vw', alt: section.settings.image.alt | escape }}
+          </div>
+        {%- endif -%}
+        <div class="promo__inner">
+          <div class="promo__content">
+            {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+            {%- if section.settings.heading != blank -%}<h2 class="h1">{{ section.settings.heading }}</h2>{%- endif -%}
+            {%- if section.settings.text != blank -%}<div class="text-muted" style="color: rgba(255,255,255,.72);">{{ section.settings.text }}</div>{%- endif -%}
+            {%- if section.settings.code != blank -%}
+              <div class="promo__code">
+                <span>{{ section.settings.code | escape }}</span>
+                <button type="button" data-copy="{{ section.settings.code | escape }}" data-copied-label="{{ 'sections.promo.copied' | t }}">{{ 'sections.promo.copy' | t }}</button>
+              </div>
+            {%- endif -%}
+            {%- if section.settings.button_label != blank -%}
+              <div><a href="{{ section.settings.button_link | default: routes.all_products_collection_url }}" class="button button--accent">{{ section.settings.button_label | escape }} {% render 'icon', name: 'arrow-right' %}</a></div>
+            {%- endif -%}
+          </div>
+
+          {%- if has_countdown -%}
+            <div>
+              {%- if section.settings.countdown_label != blank -%}
+                <p class="eyebrow" style="margin-bottom: 14px;">{{ section.settings.countdown_label }}</p>
+              {%- endif -%}
+              <count-down class="countdown" data-end="{{ end_date | date: '%Y-%m-%dT%H:%M:%S' }}{{ 'now' | date: '%z' | slice: 0, 3 }}:{{ 'now' | date: '%z' | slice: 3, 2 }}" data-hide-on-end="{{ section.settings.hide_when_expired }}" role="timer">
+                <div class="countdown__unit"><span class="countdown__value" data-days>00</span><span class="countdown__label">{{ 'sections.countdown.days' | t }}</span></div>
+                <div class="countdown__unit"><span class="countdown__value" data-hours>00</span><span class="countdown__label">{{ 'sections.countdown.hours' | t }}</span></div>
+                <div class="countdown__unit"><span class="countdown__value" data-minutes>00</span><span class="countdown__label">{{ 'sections.countdown.minutes' | t }}</span></div>
+                <div class="countdown__unit"><span class="countdown__value" data-seconds>00</span><span class="countdown__label">{{ 'sections.countdown.seconds' | t }}</span></div>
+              </count-down>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Offre promotionnelle",
+  "tag": "section",
+  "class": "section-promo",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image de fond" },
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Offre limitée" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "-15 % sur votre première commande" },
+    { "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Utilisez le code ci-dessous lors du paiement.</p>" },
+    {
+      "type": "text",
+      "id": "code",
+      "label": "Code promo",
+      "info": "Le code doit exister dans Shopify (Remises). Laissez vide pour ne pas l'afficher."
+    },
+    { "type": "text", "id": "button_label", "label": "Bouton", "default": "J'en profite" },
+    { "type": "url", "id": "button_link", "label": "Lien du bouton" },
+    { "type": "header", "content": "Compte à rebours" },
+    {
+      "type": "text",
+      "id": "end_date",
+      "label": "Date de fin",
+      "info": "Format : AAAA-MM-JJ HH:MM (ex. 2026-11-30 23:59). Fuseau horaire de la boutique. Laissez vide pour masquer le compte à rebours."
+    },
+    { "type": "text", "id": "countdown_label", "label": "Libellé", "default": "Se termine dans" },
+    { "type": "checkbox", "id": "hide_when_expired", "label": "Masquer la section une fois l'offre terminée", "default": true }
+  ],
+  "presets": [{ "name": "Offre promotionnelle" }]
+}
+{% endschema %}

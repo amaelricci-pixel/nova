@@ -1,0 +1,17 @@
+{%- comment -%} Champs d'adresse client. Paramètres : form, id {%- endcomment -%}
+<div class="contact-form__row">
+  <input class="input" name="address[first_name]" value="{{ form.first_name }}" autocomplete="given-name" placeholder="{{ 'customer.register.first_name' | t }}" aria-label="{{ 'customer.register.first_name' | t }}">
+  <input class="input" name="address[last_name]" value="{{ form.last_name }}" autocomplete="family-name" placeholder="{{ 'customer.register.last_name' | t }}" aria-label="{{ 'customer.register.last_name' | t }}">
+</div>
+<input class="input" name="address[company]" value="{{ form.company }}" autocomplete="organization" placeholder="{{ 'customer.addresses.company' | t }}" aria-label="{{ 'customer.addresses.company' | t }}">
+<input class="input" name="address[address1]" value="{{ form.address1 }}" autocomplete="address-line1" placeholder="{{ 'customer.addresses.address1' | t }}" aria-label="{{ 'customer.addresses.address1' | t }}">
+<input class="input" name="address[address2]" value="{{ form.address2 }}" autocomplete="address-line2" placeholder="{{ 'customer.addresses.address2' | t }}" aria-label="{{ 'customer.addresses.address2' | t }}">
+<div class="contact-form__row">
+  <input class="input" name="address[zip]" value="{{ form.zip }}" autocomplete="postal-code" placeholder="{{ 'customer.addresses.zip' | t }}" aria-label="{{ 'customer.addresses.zip' | t }}">
+  <input class="input" name="address[city]" value="{{ form.city }}" autocomplete="address-level2" placeholder="{{ 'customer.addresses.city' | t }}" aria-label="{{ 'customer.addresses.city' | t }}">
+</div>
+<select class="select" name="address[country]" autocomplete="country" aria-label="{{ 'customer.addresses.country' | t }}">
+  {{ all_country_option_tags }}
+</select>
+<input class="input" type="tel" name="address[phone]" value="{{ form.phone }}" autocomplete="tel" placeholder="{{ 'customer.addresses.phone' | t }}" aria-label="{{ 'customer.addresses.phone' | t }}">
+<label class="checkbox">{{ form.set_as_default_checkbox }} {{ 'customer.addresses.set_default' | t }}</label>

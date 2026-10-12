@@ -1,0 +1,51 @@
+<div class="section">
+  <div class="page-width page-width--narrow">
+    <div class="section-header section-header--center" data-reveal>
+      <div class="section-header__text">
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+        <h2>{{ section.settings.heading }}</h2>
+      </div>
+    </div>
+    <div class="accordion" data-reveal>
+      {%- for block in section.blocks -%}
+        <details {{ block.shopify_attributes }}{% if forloop.first and section.settings.open_first %} open{% endif %}>
+          <summary>{{ block.settings.question }}<span class="accordion__icon" aria-hidden="true"></span></summary>
+          <div class="accordion__content rte">{{ block.settings.answer }}</div>
+        </details>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Questions fréquentes",
+  "tag": "section",
+  "class": "section-faq",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "FAQ" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Questions fréquentes" },
+    { "type": "checkbox", "id": "open_first", "label": "Ouvrir la première question", "default": false }
+  ],
+  "blocks": [
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        { "type": "text", "id": "question", "label": "Question", "default": "Quels sont les délais de livraison ?" },
+        { "type": "richtext", "id": "answer", "label": "Réponse", "default": "<p>Indiquez ici vos délais réels, tels que définis avec votre fournisseur.</p>" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Questions fréquentes",
+      "blocks": [
+        { "type": "question", "settings": { "question": "Quels sont les délais de livraison ?", "answer": "<p>Indiquez ici vos délais réels, tels que définis avec votre fournisseur.</p>" } },
+        { "type": "question", "settings": { "question": "Comment choisir la bonne taille ?", "answer": "<p>Chaque fiche produit propose un guide des tailles. Mesurez le tour de cou et le tour de poitrail de votre animal.</p>" } },
+        { "type": "question", "settings": { "question": "Puis-je retourner un article ?", "answer": "<p>Consultez notre politique de retour pour connaître les conditions.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,52 @@
+{%- comment -%}
+  Produits recommandés : utilise l'algorithme natif de Shopify (Search & Discovery).
+  Chargé en différé, la section se masque si aucune recommandation n'est disponible.
+{%- endcomment -%}
+<div class="section">
+  <div class="page-width">
+    <product-recommendations
+      data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}&intent={{ section.settings.intent }}"
+    >
+      {%- if recommendations.performed? and recommendations.products_count > 0 -%}
+        <div class="section-header" data-reveal>
+          <div class="section-header__text">
+            {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+            <h2>{{ section.settings.heading }}</h2>
+          </div>
+        </div>
+        <div class="scroller scroller--desktop-grid" style="--cols: {{ section.settings.columns }};" role="list">
+          {%- for product in recommendations.products -%}
+            <div role="listitem">{% render 'product-card', product: product, index: forloop.index0 %}</div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </product-recommendations>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Produits recommandés",
+  "tag": "section",
+  "class": "section-recommendations",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "À découvrir" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Vous aimerez aussi" },
+    {
+      "type": "select",
+      "id": "intent",
+      "label": "Type de recommandation",
+      "options": [
+        { "value": "related", "label": "Produits similaires" },
+        { "value": "complementary", "label": "Produits complémentaires" }
+      ],
+      "default": "related",
+      "info": "Les produits complémentaires se configurent dans l'application Search & Discovery."
+    },
+    { "type": "range", "id": "products_to_show", "label": "Nombre de produits", "min": 2, "max": 10, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 5, "step": 1, "default": 4 }
+  ],
+  "enabled_on": { "templates": ["product"] },
+  "presets": [{ "name": "Produits recommandés" }]
+}
+{% endschema %}

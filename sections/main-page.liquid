@@ -1,0 +1,17 @@
+<div class="page-width page-width--narrow">
+  <div class="page-header">
+    <h1 data-reveal>{{ page.title | escape }}</h1>
+  </div>
+  <div class="rte section section--flush-top" data-reveal>
+    {{ page.content }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contenu de la page",
+  "tag": "section",
+  "class": "section-main-page",
+  "settings": []
+}
+{% endschema %}

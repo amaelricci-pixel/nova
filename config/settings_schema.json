@@ -1,0 +1,365 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "NOVA",
+    "theme_version": "1.0.0",
+    "theme_author": "NOVA",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/"
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_inverse",
+        "label": "Logo version claire (fond sombre)"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "min": 60,
+        "max": 300,
+        "step": 5,
+        "unit": "px",
+        "label": "Largeur du logo",
+        "default": 120
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "32 x 32 px recommandé"
+      }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Palette principale"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Fond",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Surface (cartes, blocs)",
+        "default": "#F4F5F7"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Texte",
+        "default": "#0A0A0B"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Texte secondaire",
+        "default": "#6B6F76"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Bordures",
+        "default": "#E3E5E8"
+      },
+      {
+        "type": "header",
+        "content": "Accent"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Bleu électrique (accent)",
+        "default": "#1F6BFF"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_contrast",
+        "label": "Texte sur l'accent",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "header",
+        "content": "Sections sombres"
+      },
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Fond sombre",
+        "default": "#0A0A0B"
+      },
+      {
+        "type": "color",
+        "id": "color_dark_text",
+        "label": "Texte sur fond sombre",
+        "default": "#F5F6F8"
+      },
+      {
+        "type": "header",
+        "content": "États"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Prix soldé / badge promo",
+        "default": "#1F6BFF"
+      },
+      {
+        "type": "color",
+        "id": "color_success",
+        "label": "Succès / en stock",
+        "default": "#14A44D"
+      },
+      {
+        "type": "color",
+        "id": "color_error",
+        "label": "Erreur / rupture",
+        "default": "#E5383B"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Police des titres",
+        "default": "geist_n6"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Police du texte",
+        "default": "geist_n4"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "min": 80,
+        "max": 140,
+        "step": 5,
+        "unit": "%",
+        "label": "Échelle des titres",
+        "default": 100
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 90,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "label": "Échelle du texte",
+        "default": 100
+      },
+      {
+        "type": "select",
+        "id": "heading_case",
+        "label": "Casse des titres",
+        "options": [
+          { "value": "none", "label": "Normale" },
+          { "value": "uppercase", "label": "Majuscules" }
+        ],
+        "default": "none"
+      }
+    ]
+  },
+  {
+    "name": "Mise en page",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "min": 1100,
+        "max": 1800,
+        "step": 20,
+        "unit": "px",
+        "label": "Largeur maximale de page",
+        "default": 1440
+      },
+      {
+        "type": "range",
+        "id": "radius",
+        "min": 0,
+        "max": 24,
+        "step": 2,
+        "unit": "px",
+        "label": "Arrondi des cartes",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "button_radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Arrondi des boutons",
+        "default": 40
+      }
+    ]
+  },
+  {
+    "name": "Animations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "animations_enabled",
+        "label": "Activer les animations d'apparition au défilement",
+        "default": true,
+        "info": "Désactivées automatiquement si le visiteur a demandé à réduire les animations."
+      },
+      {
+        "type": "checkbox",
+        "id": "hover_zoom",
+        "label": "Zoom des images produits au survol",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "glow_effects",
+        "label": "Effets lumineux bleus (style futuriste)",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Cartes produits",
+    "settings": [
+      {
+        "type": "select",
+        "id": "card_image_ratio",
+        "label": "Format des images",
+        "options": [
+          { "value": "square", "label": "Carré" },
+          { "value": "portrait", "label": "Portrait" },
+          { "value": "adapt", "label": "Adapter à l'image" }
+        ],
+        "default": "square"
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_secondary_image",
+        "label": "Afficher la deuxième image au survol",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_vendor",
+        "label": "Afficher la marque",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_rating",
+        "label": "Afficher la note produit",
+        "default": true,
+        "info": "Utilise le métachamp standard reviews.rating, rempli par une application d'avis (Judge.me, Shopify Product Reviews, Loox…). Rien ne s'affiche si le produit n'a aucun avis."
+      },
+      {
+        "type": "checkbox",
+        "id": "card_quick_add",
+        "label": "Bouton d'ajout rapide au panier",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "card_show_sale_percent",
+        "label": "Afficher le pourcentage de réduction",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Panier",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Type de panier",
+        "options": [
+          { "value": "drawer", "label": "Tiroir latéral (interactif)" },
+          { "value": "page", "label": "Page panier" }
+        ],
+        "default": "drawer"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_free_shipping",
+        "label": "Afficher la barre de livraison gratuite",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Seuil de livraison gratuite",
+        "info": "Montant dans la devise principale de la boutique. Doit correspondre à vos tarifs d'expédition Shopify.",
+        "default": 49
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_note",
+        "label": "Autoriser une note de commande",
+        "default": false
+      },
+      {
+        "type": "collection",
+        "id": "cart_empty_collection",
+        "label": "Collection proposée quand le panier est vide"
+      }
+    ]
+  },
+  {
+    "name": "Recherche",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "label": "Recherche prédictive (résultats instantanés)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "label": "Afficher le prix dans les suggestions",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      { "type": "text", "id": "social_instagram", "label": "Instagram", "placeholder": "https://instagram.com/nova" },
+      { "type": "text", "id": "social_tiktok", "label": "TikTok", "placeholder": "https://tiktok.com/@nova" },
+      { "type": "text", "id": "social_facebook", "label": "Facebook", "placeholder": "https://facebook.com/nova" },
+      { "type": "text", "id": "social_youtube", "label": "YouTube", "placeholder": "https://youtube.com/@nova" },
+      { "type": "text", "id": "social_x", "label": "X (Twitter)", "placeholder": "https://x.com/nova" },
+      { "type": "text", "id": "social_pinterest", "label": "Pinterest", "placeholder": "https://pinterest.com/nova" }
+    ]
+  },
+  {
+    "name": "Devises et langues",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_currency_codes",
+        "label": "Afficher les codes devises (ex. 29,00 EUR)",
+        "default": false
+      }
+    ]
+  }
+]

@@ -1,0 +1,89 @@
+{%- comment -%}
+  Filtres de collection / recherche (Shopify Search & Discovery).
+  Paramètres :
+  - results : collection ou search
+  - id_prefix : préfixe unique (sidebar / drawer)
+{%- endcomment -%}
+<form class="facets" action="{{ request.path }}" method="get">
+  {%- if results.terms -%}
+    <input type="hidden" name="q" value="{{ results.terms | escape }}">
+    <input type="hidden" name="options[prefix]" value="last">
+  {%- endif -%}
+
+  {%- for filter in results.filters -%}
+    {%- case filter.type -%}
+      {%- when 'list', 'boolean' -%}
+        <details{% if forloop.index <= 3 or filter.active_values.size > 0 %} open{% endif %}>
+          <summary>
+            {{ filter.label | escape }}
+            {%- if filter.active_values.size > 0 %} <span class="text-muted">({{ filter.active_values.size }})</span>{% endif -%}
+            <span class="accordion__icon" aria-hidden="true">{% render 'icon', name: 'chevron-down', class: '' %}</span>
+          </summary>
+          <div class="facets__list">
+            {%- for value in filter.values -%}
+              {%- assign input_id = id_prefix | append: '-' | append: filter.param_name | handle | append: '-' | append: forloop.index -%}
+              <label for="{{ input_id }}">
+                <span class="checkbox">
+                  <input
+                    type="checkbox"
+                    id="{{ input_id }}"
+                    name="{{ value.param_name }}"
+                    value="{{ value.value }}"
+                    {% if value.active %}checked{% endif %}
+                    {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                  >
+                  <span>{{ value.label | escape }}</span>
+                </span>
+                <span>{{ value.count }}</span>
+              </label>
+            {%- endfor -%}
+          </div>
+        </details>
+
+      {%- when 'price_range' -%}
+        {%- liquid
+          assign currency_symbol = cart.currency.symbol
+          assign min_value = filter.min_value.value | divided_by: 100.0
+          assign max_value = filter.max_value.value | divided_by: 100.0
+          assign range_max = filter.range_max | divided_by: 100.0 | ceil
+        -%}
+        <details open>
+          <summary>
+            {{ filter.label | escape }}
+            <span class="accordion__icon" aria-hidden="true">{% render 'icon', name: 'chevron-down', class: '' %}</span>
+          </summary>
+          <div class="facets__price">
+            <div class="field">
+              <label class="visually-hidden" for="{{ id_prefix }}-price-min">{{ 'collections.filters.from' | t }}</label>
+              <input
+                class="input"
+                id="{{ id_prefix }}-price-min"
+                type="number"
+                inputmode="decimal"
+                name="{{ filter.min_value.param_name }}"
+                {% if filter.min_value.value %}value="{{ min_value }}"{% endif %}
+                placeholder="{{ 'collections.filters.from' | t }} 0 {{ currency_symbol }}"
+                min="0"
+                max="{{ range_max }}"
+              >
+            </div>
+            <div class="field">
+              <label class="visually-hidden" for="{{ id_prefix }}-price-max">{{ 'collections.filters.to' | t }}</label>
+              <input
+                class="input"
+                id="{{ id_prefix }}-price-max"
+                type="number"
+                inputmode="decimal"
+                name="{{ filter.max_value.param_name }}"
+                {% if filter.max_value.value %}value="{{ max_value }}"{% endif %}
+                placeholder="{{ 'collections.filters.to' | t }} {{ range_max }} {{ currency_symbol }}"
+                min="0"
+                max="{{ range_max }}"
+              >
+            </div>
+          </div>
+        </details>
+    {%- endcase -%}
+  {%- endfor -%}
+  <noscript><button type="submit" class="button button--small mt-2">{{ 'collections.filters.apply' | t }}</button></noscript>
+</form>

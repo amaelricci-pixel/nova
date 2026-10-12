@@ -1,0 +1,73 @@
+{%- comment -%}
+  Avis clients — aucune donnée fictive.
+  - Le résumé (note moyenne + nombre d'avis) provient des métachamps standards
+    reviews.rating / reviews.rating_count, remplis par votre application d'avis.
+  - La liste des avis et le formulaire sont fournis par l'application elle-même
+    via un bloc d'application (@app) ajouté dans l'éditeur de thème.
+{%- endcomment -%}
+{%- liquid
+  assign has_rating = false
+  if product.metafields.reviews.rating.value != blank
+    assign has_rating = true
+    assign rating = product.metafields.reviews.rating.value
+    assign rating_max = rating.scale_max | default: 5
+    assign pct = rating.rating | times: 100.0 | divided_by: rating_max | round: 1
+    assign count = product.metafields.reviews.rating_count.value | default: 0
+  endif
+-%}
+{%- if has_rating or section.blocks.size > 0 or request.design_mode -%}
+  <div class="section" id="reviews">
+    <div class="page-width">
+      <div class="section-header" data-reveal>
+        <div class="section-header__text">
+          {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow }}</span>{%- endif -%}
+          <h2>{{ section.settings.heading }}</h2>
+        </div>
+        {%- if has_rating -%}
+          <div class="reviews-summary">
+            <span class="reviews-summary__score">{{ rating.rating | round: 1 }}</span>
+            <div>
+              <span class="rating__stars" style="--pct: {{ pct }}%;" aria-hidden="true"></span>
+              <p class="text-muted" style="font-size: var(--fs-sm);">
+                {{ 'products.rating.label' | t: rating: rating.rating, max: rating_max }}
+                {%- if count > 0 %} · {{ 'products.rating.count' | t: count: count }}{% endif -%}
+              </p>
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+
+      <div class="reviews-app">
+        {%- for block in section.blocks -%}
+          {% render block %}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.blocks.size == 0 and request.design_mode -%}
+        <div class="reviews-empty">
+          <p><strong>Aucune application d'avis connectée.</strong></p>
+          <p>Installez une application d'avis (ex. Judge.me, Shopify Product Reviews, Loox), puis ajoutez son bloc ici via « Ajouter un bloc ». Ce message n'est visible que dans l'éditeur.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "tag": "section",
+  "class": "section-reviews",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Avis clients" },
+    { "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Ce qu'en pensent nos clients" },
+    {
+      "type": "paragraph",
+      "content": "Les avis proviennent exclusivement de votre application d'avis. Ajoutez son bloc ci-dessous."
+    }
+  ],
+  "blocks": [{ "type": "@app" }],
+  "enabled_on": { "templates": ["product"] },
+  "presets": [{ "name": "Avis clients" }]
+}
+{% endschema %}

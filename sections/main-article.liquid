@@ -1,0 +1,61 @@
+<article class="page-width">
+  <div class="article">
+    <header class="article__header">
+      <span class="article-card__meta">{{ article.published_at | time_tag: format: 'date' }}{% if section.settings.show_author %} · {{ article.author }}{% endif %}</span>
+      <h1 data-reveal>{{ article.title | escape }}</h1>
+    </header>
+    {%- if article.image -%}
+      <div class="article__image media media--landscape" data-reveal>
+        {{ article.image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '600, 900, 1200, 1600', sizes: '(min-width: 800px) 760px, 100vw', alt: article.image.alt | escape }}
+      </div>
+    {%- endif -%}
+    <div class="rte">{{ article.content }}</div>
+
+    {%- if article.tags.size > 0 -%}
+      <div class="facets__active mt-4">
+        {%- for tag in article.tags -%}
+          <a href="{{ blog.url }}/tagged/{{ tag | handle }}" class="facet-pill">{{ tag }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="mt-4">
+      <a href="{{ blog.url }}" class="link">{% render 'icon', name: 'arrow-left' %} {{ 'blogs.article.back' | t: title: blog.title }}</a>
+    </div>
+
+    {%- if blog.comments_enabled? -%}
+      <div class="section">
+        <h2 class="h3">{{ 'blogs.comments.title' | t }}</h2>
+        {%- for comment in article.comments -%}
+          <div style="padding: 20px 0; border-bottom: 1px solid var(--color-border);">
+            <div class="rte">{{ comment.content }}</div>
+            <p class="article-card__meta mt-1">{{ comment.author }} · {{ comment.created_at | time_tag: format: 'date' }}</p>
+          </div>
+        {%- endfor -%}
+        {%- form 'new_comment', article, class: 'contact-form mt-3' -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-message form-message--success">{% if blog.moderated? %}{{ 'blogs.comments.success_moderated' | t }}{% else %}{{ 'blogs.comments.success' | t }}{% endif %}</p>
+          {%- endif -%}
+          {%- if form.errors -%}<div class="form-message form-message--error">{{ form.errors | default_errors }}</div>{%- endif -%}
+          <div class="contact-form__row">
+            <input class="input" name="comment[author]" value="{{ form.author }}" placeholder="{{ 'blogs.comments.name' | t }}" required aria-label="{{ 'blogs.comments.name' | t }}">
+            <input class="input" type="email" name="comment[email]" value="{{ form.email }}" placeholder="{{ 'blogs.comments.email' | t }}" required aria-label="{{ 'blogs.comments.email' | t }}">
+          </div>
+          <textarea class="textarea" name="comment[body]" placeholder="{{ 'blogs.comments.message' | t }}" required aria-label="{{ 'blogs.comments.message' | t }}">{{ form.body }}</textarea>
+          <div><button type="submit" class="button">{{ 'blogs.comments.post' | t }}</button></div>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article de blog",
+  "tag": "section",
+  "class": "section-main-article",
+  "settings": [
+    { "type": "checkbox", "id": "show_author", "label": "Afficher l'auteur", "default": false }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,50 @@
+{%- comment -%}
+  Variables CSS générées depuis les réglages du thème (Personnaliser > Paramètres du thème).
+{%- endcomment -%}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign body_font_bold = body_font | font_modify: 'weight', 'bold'
+  assign body_font_medium = body_font | font_modify: 'weight', '500'
+  assign heading_font_bold = heading_font | font_modify: 'weight', '700'
+-%}
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ heading_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_medium | font_face: font_display: 'swap' }}
+
+  :root {
+    --color-bg: {{ settings.color_background }};
+    --color-surface: {{ settings.color_surface }};
+    --color-text: {{ settings.color_text }};
+    --color-text-rgb: {{ settings.color_text.red }}, {{ settings.color_text.green }}, {{ settings.color_text.blue }};
+    --color-muted: {{ settings.color_muted }};
+    --color-border: {{ settings.color_border }};
+    --color-accent: {{ settings.color_accent }};
+    --color-accent-rgb: {{ settings.color_accent.red }}, {{ settings.color_accent.green }}, {{ settings.color_accent.blue }};
+    --color-accent-contrast: {{ settings.color_accent_contrast }};
+    --color-dark: {{ settings.color_dark }};
+    --color-dark-rgb: {{ settings.color_dark.red }}, {{ settings.color_dark.green }}, {{ settings.color_dark.blue }};
+    --color-dark-text: {{ settings.color_dark_text }};
+    --color-sale: {{ settings.color_sale }};
+    --color-success: {{ settings.color_success }};
+    --color-error: {{ settings.color_error }};
+
+    --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-weight: {{ heading_font.weight }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+    --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+    --body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+    --heading-case: {{ settings.heading_case }};
+
+    --page-width: {{ settings.page_width }}px;
+    --radius: {{ settings.radius }}px;
+    --radius-button: {{ settings.button_radius }}px;
+    --logo-width: {{ settings.logo_width }}px;
+  }
+</style>

@@ -1,0 +1,139 @@
+<div class="section{% if section.settings.background == 'surface' %} section--surface{% elsif section.settings.background == 'dark' %} section--dark{% endif %}">
+  <div class="page-width">
+    <div class="image-text{% if section.settings.layout == 'right' %} image-text--reverse{% endif %}">
+      <div class="image-text__media" data-reveal>
+        <div class="media media--{{ section.settings.ratio }}">
+          {%- if section.settings.image != blank -%}
+            {{ section.settings.image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500, 750, 1000, 1400', sizes: '(min-width: 990px) 50vw, 100vw', alt: section.settings.image.alt | escape }}
+          {%- else -%}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="image-text__content" data-reveal style="--reveal-index: 1;">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'eyebrow' -%}
+              <span class="eyebrow" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>
+            {%- when 'heading' -%}
+              <h2 {{ block.shopify_attributes }}>{{ block.settings.heading }}</h2>
+            {%- when 'text' -%}
+              <div class="rte{% unless section.settings.background == 'dark' %} text-muted{% endunless %}" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+            {%- when 'list_item' -%}
+              <ul class="image-text__list" role="list" {{ block.shopify_attributes }}>
+                <li>{% render 'icon', name: 'check' %}<span>{{ block.settings.text }}</span></li>
+              </ul>
+            {%- when 'button' -%}
+              {%- if block.settings.label != blank -%}
+                <div {{ block.shopify_attributes }}>
+                  <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="button{% if block.settings.style == 'accent' %} button--accent{% elsif block.settings.style == 'outline' %} button--outline{% endif %}">
+                    {{ block.settings.label | escape }} {% render 'icon', name: 'arrow-right' %}
+                  </a>
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Image avec texte",
+  "tag": "section",
+  "class": "section-image-text",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    {
+      "type": "select",
+      "id": "ratio",
+      "label": "Format de l'image",
+      "options": [
+        { "value": "square", "label": "Carré" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "landscape", "label": "Paysage" }
+      ],
+      "default": "portrait"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Position de l'image",
+      "options": [
+        { "value": "left", "label": "Image à gauche" },
+        { "value": "right", "label": "Image à droite" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "default", "label": "Blanc" },
+        { "value": "surface", "label": "Gris clair" },
+        { "value": "dark", "label": "Noir" }
+      ],
+      "default": "default"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "eyebrow",
+      "name": "Surtitre",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "text", "label": "Texte", "default": "Notre engagement" }]
+    },
+    {
+      "type": "heading",
+      "name": "Titre",
+      "limit": 1,
+      "settings": [{ "type": "inline_richtext", "id": "heading", "label": "Titre", "default": "Pensé pour eux, choisi par vous" }]
+    },
+    {
+      "type": "text",
+      "name": "Texte",
+      "settings": [{ "type": "richtext", "id": "text", "label": "Texte", "default": "<p>Présentez ici votre marque, votre sélection de produits et ce qui vous différencie.</p>" }]
+    },
+    {
+      "type": "list_item",
+      "name": "Point fort",
+      "settings": [{ "type": "text", "id": "text", "label": "Texte", "default": "Matériaux sélectionnés avec soin" }]
+    },
+    {
+      "type": "button",
+      "name": "Bouton",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "label", "label": "Texte", "default": "En savoir plus" },
+        { "type": "url", "id": "link", "label": "Lien" },
+        {
+          "type": "select",
+          "id": "style",
+          "label": "Style",
+          "options": [
+            { "value": "dark", "label": "Plein" },
+            { "value": "accent", "label": "Bleu électrique" },
+            { "value": "outline", "label": "Contour" }
+          ],
+          "default": "dark"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image avec texte",
+      "blocks": [
+        { "type": "eyebrow" },
+        { "type": "heading" },
+        { "type": "text" },
+        { "type": "list_item", "settings": { "text": "Matériaux sélectionnés avec soin" } },
+        { "type": "list_item", "settings": { "text": "Adapté aux chiens et chats de toutes tailles" } },
+        { "type": "button" }
+      ]
+    }
+  ]
+}
+{% endschema %}
