@@ -16,7 +16,8 @@
       "color_error": "#E5383B",
       "cart_type": "drawer",
       "animations_enabled": true,
-      "glow_effects": true
+      "glow_effects": true,
+      "cart_show_free_shipping": false
     }
   }
 }
