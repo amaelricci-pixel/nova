@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -6,22 +15,30 @@
         "slide-1": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/fashion-model-dog.jpg",
+            "image_mobile": "shopify://shop_images/green-cat-eyes.jpg",
             "eyebrow": "Nouvelle collection",
             "heading": "Le confort <em>premium</em> pour vos animaux",
             "text": "<p>Colliers, harnais, couchages et jouets pensés pour le quotidien de votre chien ou de votre chat.</p>",
             "button_label": "Découvrir",
             "button_link": "shopify://collections/all",
             "button_label_2": "Voir les offres",
+            "button_link_2": "",
             "alignment": "left"
           }
         },
         "slide-2": {
           "type": "slide",
           "settings": {
+            "image": "shopify://shop_images/grey-cat-with-blue-eyes.jpg",
+            "image_mobile": "shopify://shop_images/a-golden-labrador-in-a-necktie_43877f41-8aeb-46da-b7f6-f8f087f90bcd.jpg",
             "eyebrow": "Promenade",
             "heading": "Chaque sortie, <em>en toute sécurité</em>",
             "text": "<p>Harnais, laisses et accessoires lumineux pour des balades sereines, de jour comme de nuit.</p>",
             "button_label": "Équipement promenade",
+            "button_link": "",
+            "button_label_2": "Voir les offres",
+            "button_link_2": "",
             "alignment": "left"
           }
         }
@@ -31,7 +48,7 @@
         "slide-2"
       ],
       "settings": {
-        "height": "large",
+        "height": "small",
         "overlay": 55,
         "show_grid": true,
         "autoplay": true,
@@ -81,7 +98,9 @@
         "f3",
         "f4"
       ],
-      "settings": {}
+      "settings": {
+        "heading": ""
+      }
     },
     "categories": {
       "type": "collection-list",
@@ -89,25 +108,33 @@
         "c1": {
           "type": "collection",
           "settings": {
-            "title": "Chiens"
+            "collection": "",
+            "title": "Chiens",
+            "image": "shopify://shop_images/irish-setter-dog-close-up.jpg"
           }
         },
         "c2": {
           "type": "collection",
           "settings": {
-            "title": "Chats"
+            "collection": "",
+            "title": "Chats",
+            "image": "shopify://shop_images/tabby-cat-lounging-around.jpg"
           }
         },
         "c3": {
           "type": "collection",
           "settings": {
-            "title": "Promenade"
+            "collection": "",
+            "title": "Promenade",
+            "image": "shopify://shop_images/brown-mutt-dog.jpg"
           }
         },
         "c4": {
           "type": "collection",
           "settings": {
-            "title": "Couchage"
+            "collection": "",
+            "title": "Couchage",
+            "image": "shopify://shop_images/puppy-on-fluffy-bed.jpg"
           }
         }
       },
@@ -133,6 +160,8 @@
       "settings": {
         "eyebrow": "Sélection",
         "heading": "Les incontournables",
+        "text": "",
+        "collection": "",
         "products_to_show": 8,
         "columns": 4,
         "layout": "carousel",
@@ -147,7 +176,10 @@
         "eyebrow": "Offre limitée",
         "heading": "-15 % sur votre première commande",
         "text": "<p>Utilisez le code ci-dessous lors du paiement.</p>",
+        "code": "",
         "button_label": "J'en profite",
+        "button_link": "",
+        "end_date": "",
         "countdown_label": "Se termine dans",
         "hide_when_expired": true
       }
@@ -210,6 +242,8 @@
       "settings": {
         "eyebrow": "Nouveautés",
         "heading": "Fraîchement arrivés",
+        "text": "",
+        "collection": "",
         "products_to_show": 4,
         "columns": 4,
         "layout": "carousel",
@@ -276,6 +310,7 @@
         "b"
       ],
       "settings": {
+        "image": "shopify://shop_images/dog-at-the-park.jpg",
         "ratio": "portrait",
         "layout": "left",
         "background": "dark"
