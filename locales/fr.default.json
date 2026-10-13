@@ -169,9 +169,6 @@
     "placeholder": {
       "product_title": "Nom du produit",
       "collection_title": "Nom de la catégorie"
-    },
-    "illustration": {
-      "alt": "Illustration d'un chien, d'un chiot et d'un chat"
     }
   },
   "blogs": {

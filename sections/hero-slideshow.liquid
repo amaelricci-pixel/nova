@@ -40,8 +40,7 @@
               }}
             </picture>
           {%- else -%}
-            {%- comment -%} Illustration NOVA par défaut tant qu'aucune image n'est choisie {%- endcomment -%}
-            <img src="{{ 'nova-banniere.jpg' | asset_url }}" alt="{{ 'sections.illustration.alt' | t }}" width="2400" height="1200" loading="{{ loading }}" fetchpriority="{{ priority }}">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
           {%- endif -%}
         </div>
         <div class="hero__overlay"></div>
