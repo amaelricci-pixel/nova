@@ -5,6 +5,33 @@
     assign has_filters = true
   endif
 -%}
+{%- comment -%} Sous-catégories, d'après le menu (ex. Chiens > Laisses, Jouets…) {%- endcomment -%}
+{%- liquid
+  assign subnav_parent = nil
+  if section.settings.show_subcategories and section.settings.subcategory_menu != blank
+    for link in section.settings.subcategory_menu.links
+      if link.links.size > 0
+        if link.url == collection.url
+          assign subnav_parent = link
+        else
+          for child in link.links
+            if child.url == collection.url
+              assign subnav_parent = link
+            endif
+          endfor
+        endif
+      endif
+    endfor
+  endif
+-%}
+{%- liquid
+  assign has_sidebar = false
+  if section.settings.filter_layout == 'sidebar'
+    if has_filters or subnav_parent
+      assign has_sidebar = true
+    endif
+  endif
+-%}
 
 {%- comment -%} En-tête de collection {%- endcomment -%}
 <div class="collection-hero{% if section.settings.hero_style == 'light' %} collection-hero--light{% endif %}">
@@ -23,27 +50,8 @@
         </ol>
       </nav>
       <h1 data-reveal>{{ collection.title | escape }}</h1>
-      {%- comment -%} Sous-catégories, d'après le menu (ex. Chiens > Laisses, Jouets…) {%- endcomment -%}
-      {%- liquid
-        assign subnav_parent = nil
-        if section.settings.show_subcategories and section.settings.subcategory_menu != blank
-          for link in section.settings.subcategory_menu.links
-            if link.links.size > 0
-              if link.url == collection.url
-                assign subnav_parent = link
-              else
-                for child in link.links
-                  if child.url == collection.url
-                    assign subnav_parent = link
-                  endif
-                endfor
-              endif
-            endif
-          endfor
-        endif
-      -%}
       {%- if subnav_parent -%}
-        <nav class="subcats" aria-label="{{ 'collections.general.subcategories' | t }}" data-reveal style="--reveal-index: 1;">
+        <nav class="subcats{% if has_sidebar %} subcats--mobile{% endif %}" aria-label="{{ 'collections.general.subcategories' | t }}" data-reveal style="--reveal-index: 1;">
           <a href="{{ subnav_parent.url }}" class="subcats__pill"{% if subnav_parent.url == collection.url %} aria-current="page"{% endif %}>{{ 'collections.general.all_in' | t: title: subnav_parent.title }}</a>
           {%- for child in subnav_parent.links -%}
             <a href="{{ child.url }}" class="subcats__pill"{% if child.url == collection.url %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
@@ -84,10 +92,35 @@
         {%- endif -%}
       </div>
 
-      <div class="collection-layout{% if has_filters and section.settings.filter_layout == 'sidebar' %} collection-layout--sidebar{% endif %}">
-        {%- if has_filters and section.settings.filter_layout == 'sidebar' -%}
-          <aside class="collection-sidebar" id="FacetsSidebar-{{ section.id }}" aria-label="{{ 'collections.filters.title' | t }}">
-            {% render 'facets', results: collection, id_prefix: 'Sidebar' %}
+      <div class="collection-layout{% if has_sidebar %} collection-layout--sidebar{% endif %}">
+        {%- if has_sidebar -%}
+          <aside class="collection-sidebar" aria-label="{{ 'collections.filters.title' | t }}">
+            {%- if subnav_parent -%}
+              <nav class="sidebar-cats" aria-label="{{ 'collections.general.subcategories' | t }}">
+                <p class="sidebar-cats__title">{{ 'collections.general.subcategories' | t }}</p>
+                <ul role="list">
+                  <li>
+                    <a href="{{ subnav_parent.url }}"{% if subnav_parent.url == collection.url %} aria-current="page"{% endif %}>
+                      <span>{{ 'collections.general.all_in' | t: title: subnav_parent.title }}</span>
+                      {%- if subnav_parent.type == 'collection_link' %}<span>{{ subnav_parent.object.products_count }}</span>{% endif -%}
+                    </a>
+                  </li>
+                  {%- for child in subnav_parent.links -%}
+                    <li>
+                      <a href="{{ child.url }}"{% if child.url == collection.url %} aria-current="page"{% endif %}>
+                        <span>{{ child.title | escape }}</span>
+                        {%- if child.type == 'collection_link' %}<span>{{ child.object.products_count }}</span>{% endif -%}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            {%- endif -%}
+            {%- if has_filters -%}
+              <div id="FacetsSidebar-{{ section.id }}">
+                {% render 'facets', results: collection, id_prefix: 'Sidebar' %}
+              </div>
+            {%- endif -%}
           </aside>
         {%- endif -%}
 
@@ -124,7 +157,7 @@
 
           <div class="collection-products" id="CollectionProducts-{{ section.id }}">
             {%- if collection.products.size > 0 -%}
-              <ul class="grid" role="list" style="--cols: {{ section.settings.columns }}; --cols-tablet: {% if has_filters and section.settings.filter_layout == 'sidebar' %}2{% else %}3{% endif %};">
+              <ul class="grid" role="list" style="--cols: {{ section.settings.columns }}; --cols-tablet: {% if has_sidebar %}2{% else %}3{% endif %};">
                 {%- for product in collection.products -%}
                   {%- liquid
                     assign lazy_load = true
