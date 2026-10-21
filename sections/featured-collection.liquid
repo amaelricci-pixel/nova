@@ -2,6 +2,14 @@
   assign collection = section.settings.collection
   assign limit = section.settings.products_to_show
 -%}
+{%- liquid
+  assign has_products = false
+  if collection != blank and collection.products_count > 0
+    assign has_products = true
+  endif
+-%}
+{%- comment -%} Sans produits, la section est masquée pour les clients (exemples visibles seulement dans l'éditeur) {%- endcomment -%}
+{%- if has_products or request.design_mode -%}
 <div class="section{% if section.settings.background == 'surface' %} section--surface{% elsif section.settings.background == 'dark' %} section--dark{% endif %}">
   <div class="page-width">
     <div class="section-header{% if section.settings.align == 'center' %} section-header--center{% endif %}" data-reveal>
@@ -20,7 +28,7 @@
       style="--cols: {{ section.settings.columns }}; --cols-tablet: 3; --cols-mobile: 2;"
       role="list"
     >
-      {%- if collection != blank and collection.products_count > 0 -%}
+      {%- if has_products -%}
         {%- for product in collection.products limit: limit -%}
           <div role="listitem">{% render 'product-card', product: product, index: forloop.index0 %}</div>
         {%- endfor -%}
@@ -40,6 +48,7 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {

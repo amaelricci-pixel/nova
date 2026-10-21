@@ -108,7 +108,7 @@
         "c1": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "chiens",
             "title": "Chiens",
             "image": "shopify://shop_images/irish-setter-dog-close-up.jpg"
           }
@@ -116,7 +116,7 @@
         "c2": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "chats",
             "title": "Chats",
             "image": "shopify://shop_images/tabby-cat-lounging-around.jpg"
           }
@@ -124,15 +124,15 @@
         "c3": {
           "type": "collection",
           "settings": {
-            "collection": "",
-            "title": "Promenade",
+            "collection": "laisses-pour-chien",
+            "title": "Laisses",
             "image": "shopify://shop_images/brown-mutt-dog.jpg"
           }
         },
         "c4": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "couchage-pour-chien",
             "title": "Couchage",
             "image": "shopify://shop_images/puppy-on-fluffy-bed.jpg"
           }
@@ -161,7 +161,7 @@
         "eyebrow": "Sélection",
         "heading": "Les incontournables",
         "text": "",
-        "collection": "",
+        "collection": "chiens",
         "products_to_show": 8,
         "columns": 4,
         "layout": "carousel",
@@ -243,7 +243,7 @@
         "eyebrow": "Nouveautés",
         "heading": "Fraîchement arrivés",
         "text": "",
-        "collection": "",
+        "collection": "chats",
         "products_to_show": 4,
         "columns": 4,
         "layout": "carousel",
