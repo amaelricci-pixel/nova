@@ -73,6 +73,37 @@
               </div>
             {%- endif -%}
           </div>
+
+          {%- comment -%} Produit mis en avant, en haut à droite de la bannière {%- endcomment -%}
+          {%- assign spotlight = block.settings.product -%}
+          {%- if spotlight != blank and block.settings.alignment != 'center' -%}
+            {%- liquid
+              assign spot_label = block.settings.product_label
+              if spot_label == blank
+                assign spot_label = 'sections.hero.spotlight' | t
+              endif
+              assign spot_on_sale = false
+              if spotlight.compare_at_price > spotlight.price
+                assign spot_on_sale = true
+              endif
+            -%}
+            <a href="{{ spotlight.url }}" class="hero__product" data-reveal style="--reveal-index: 4;">
+              <span class="hero__product-badge">{{ spot_label | escape }}</span>
+              <div class="hero__product-media">
+                {%- if spotlight.featured_media -%}
+                  {{ spotlight.featured_media | image_url: width: 600 | image_tag: loading: 'eager', widths: '300, 450, 600', sizes: '(min-width: 990px) 300px, 45vw', alt: spotlight.title | escape }}
+                {%- endif -%}
+              </div>
+              <div class="hero__product-info">
+                <p class="hero__product-title">{{ spotlight.title | escape }}</p>
+                <div class="hero__product-price">
+                  <strong>{{ spotlight.price | money }}</strong>
+                  {%- if spot_on_sale %} <s>{{ spotlight.compare_at_price | money }}</s>{% endif -%}
+                </div>
+              </div>
+              <span class="hero__product-cta">{{ 'sections.hero.spotlight_cta' | t }} {% render 'icon', name: 'arrow-right' %}</span>
+            </a>
+          {%- endif -%}
         </div>
       </div>
     {%- endfor -%}
@@ -161,6 +192,14 @@
         { "type": "url", "id": "button_link", "label": "Lien du bouton principal" },
         { "type": "text", "id": "button_label_2", "label": "Bouton secondaire", "default": "Voir les offres" },
         { "type": "url", "id": "button_link_2", "label": "Lien du bouton secondaire" },
+        { "type": "header", "content": "Produit mis en avant" },
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Produit",
+          "info": "Affiché en carte en haut à droite de la bannière (alignement « Gauche » uniquement)."
+        },
+        { "type": "text", "id": "product_label", "label": "Étiquette", "default": "Coup de cœur" },
         {
           "type": "select",
           "id": "alignment",

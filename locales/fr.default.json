@@ -180,6 +180,10 @@
     "placeholder": {
       "product_title": "Nom du produit",
       "collection_title": "Nom de la catégorie"
+    },
+    "hero": {
+      "spotlight": "Coup de cœur",
+      "spotlight_cta": "Découvrir"
     }
   },
   "blogs": {

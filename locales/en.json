@@ -180,6 +180,10 @@
     "placeholder": {
       "product_title": "Product name",
       "collection_title": "Category name"
+    },
+    "hero": {
+      "spotlight": "Featured",
+      "spotlight_cta": "Shop now"
     }
   },
   "blogs": {
