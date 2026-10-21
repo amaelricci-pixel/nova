@@ -23,6 +23,33 @@
         </ol>
       </nav>
       <h1 data-reveal>{{ collection.title | escape }}</h1>
+      {%- comment -%} Sous-catégories, d'après le menu (ex. Chiens > Laisses, Jouets…) {%- endcomment -%}
+      {%- liquid
+        assign subnav_parent = nil
+        if section.settings.show_subcategories and section.settings.subcategory_menu != blank
+          for link in section.settings.subcategory_menu.links
+            if link.links.size > 0
+              if link.url == collection.url
+                assign subnav_parent = link
+              else
+                for child in link.links
+                  if child.url == collection.url
+                    assign subnav_parent = link
+                  endif
+                endfor
+              endif
+            endif
+          endfor
+        endif
+      -%}
+      {%- if subnav_parent -%}
+        <nav class="subcats" aria-label="{{ 'collections.general.subcategories' | t }}" data-reveal style="--reveal-index: 1;">
+          <a href="{{ subnav_parent.url }}" class="subcats__pill"{% if subnav_parent.url == collection.url %} aria-current="page"{% endif %}>{{ 'collections.general.all_in' | t: title: subnav_parent.title }}</a>
+          {%- for child in subnav_parent.links -%}
+            <a href="{{ child.url }}" class="subcats__pill"{% if child.url == collection.url %} aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
       {%- if section.settings.show_description and collection.description != blank -%}
         <div class="rte" data-reveal style="--reveal-index: 1; opacity: .8;">{{ collection.description }}</div>
       {%- endif -%}
@@ -160,6 +187,14 @@
     },
     { "type": "checkbox", "id": "show_image", "label": "Afficher l'image de la collection", "default": true },
     { "type": "checkbox", "id": "show_description", "label": "Afficher la description", "default": true },
+    { "type": "checkbox", "id": "show_subcategories", "label": "Afficher les sous-catégories", "default": true },
+    {
+      "type": "link_list",
+      "id": "subcategory_menu",
+      "label": "Menu des sous-catégories",
+      "default": "main-menu",
+      "info": "Les sous-éléments du menu (ex. Chiens > Laisses) s'affichent en boutons sur la page de la catégorie."
+    },
     { "type": "range", "id": "products_per_page", "label": "Produits par page", "min": 8, "max": 48, "step": 4, "default": 24 },
     { "type": "range", "id": "columns", "label": "Colonnes (ordinateur)", "min": 2, "max": 5, "step": 1, "default": 4 },
     { "type": "header", "content": "Filtres et tri" },

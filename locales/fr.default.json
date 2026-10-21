@@ -113,7 +113,9 @@
       "products_count": {
         "one": "{{ count }} produit",
         "other": "{{ count }} produits"
-      }
+      },
+      "subcategories": "Sous-catégories",
+      "all_in": "Tout {{ title }}"
     },
     "filters": {
       "title": "Filtres",

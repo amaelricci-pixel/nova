@@ -113,7 +113,9 @@
       "products_count": {
         "one": "{{ count }} product",
         "other": "{{ count }} products"
-      }
+      },
+      "subcategories": "Subcategories",
+      "all_in": "All {{ title }}"
     },
     "filters": {
       "title": "Filters",

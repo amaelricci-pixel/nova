@@ -5,44 +5,101 @@
     <h1 data-reveal>{{ page_heading | escape }}</h1>
   </div>
 </div>
+{%- liquid
+  assign menu = section.settings.menu
+  assign has_groups = false
+  if menu != blank
+    for link in menu.links
+      if link.type == 'collection_link' and link.links.size > 0
+        assign has_groups = true
+      endif
+    endfor
+  endif
+-%}
 <div class="section section--flush-top">
   <div class="page-width">
-    {%- liquid
-      case section.settings.sort
-        when 'products_high', 'products_low'
-          assign list = collections | sort: 'all_products_count'
-        when 'date', 'date_reversed'
-          assign list = collections | sort: 'published_at'
-        else
-          assign list = collections
-      endcase
-      if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed'
-        assign list = list | reverse
-      endif
-    -%}
-    <ul class="grid" role="list" style="--cols: {{ section.settings.columns }};">
-      {%- for collection in list -%}
-        <li data-reveal style="--reveal-index: {{ forloop.index0 | modulo: 8 }};">
-          <a href="{{ collection.url }}" class="collection-card">
-            <div class="media media--portrait">
-              {%- if collection.featured_image -%}
-                {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 1100px) 25vw, 50vw', alt: collection.title | escape }}
-              {%- else -%}
-                {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
-              {%- endif -%}
-            </div>
-            <div class="collection-card__overlay"></div>
-            <div class="collection-card__info">
-              <div>
-                <h2 class="collection-card__title">{{ collection.title | escape }}</h2>
-                <span class="collection-card__count">{{ 'sections.collection_list.products_count' | t: count: collection.products_count }}</span>
+    {%- if has_groups -%}
+      {%- comment -%} Catégories rangées selon le menu : parent puis sous-catégories {%- endcomment -%}
+      {%- for link in menu.links -%}
+        {%- if link.type == 'collection_link' and link.links.size > 0 -%}
+          {%- assign parent = link.object -%}
+          <div class="category-group" data-reveal>
+            <div class="section-header">
+              <div class="section-header__text">
+                <h2>{{ link.title | escape }}</h2>
+                {%- if parent.products_count > 0 -%}
+                  <p class="text-muted">{{ 'sections.collection_list.products_count' | t: count: parent.products_count }}</p>
+                {%- endif -%}
               </div>
-              <span class="collection-card__arrow">{% render 'icon', name: 'arrow-up-right' %}</span>
+              <a href="{{ link.url }}" class="link">{{ 'general.navigation.view_all' | t }} {% render 'icon', name: 'arrow-right' %}</a>
             </div>
-          </a>
-        </li>
+            <ul class="grid" role="list" style="--cols: {{ section.settings.columns }}; --cols-tablet: 3; --cols-mobile: 2;">
+              {%- for child in link.links -%}
+                {%- assign sub = child.object -%}
+                <li data-reveal style="--reveal-index: {{ forloop.index0 | modulo: 8 }};">
+                  <a href="{{ child.url }}" class="collection-card">
+                    <div class="media media--square">
+                      {%- if child.type == 'collection_link' and sub.featured_image -%}
+                        {{ sub.featured_image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300, 450, 600, 700', sizes: '(min-width: 1100px) 20vw, 50vw', alt: child.title | escape }}
+                      {%- else -%}
+                        {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {%- endif -%}
+                    </div>
+                    <div class="collection-card__overlay"></div>
+                    <div class="collection-card__info">
+                      <div>
+                        <h3 class="collection-card__title">{{ child.title | escape }}</h3>
+                        {%- if child.type == 'collection_link' -%}
+                          <span class="collection-card__count">{{ 'sections.collection_list.products_count' | t: count: sub.products_count }}</span>
+                        {%- endif -%}
+                      </div>
+                      <span class="collection-card__arrow">{% render 'icon', name: 'arrow-up-right' %}</span>
+                    </div>
+                  </a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
       {%- endfor -%}
-    </ul>
+    {%- else -%}
+      {%- liquid
+        case section.settings.sort
+          when 'products_high', 'products_low'
+            assign list = collections | sort: 'all_products_count'
+          when 'date', 'date_reversed'
+            assign list = collections | sort: 'published_at'
+          else
+            assign list = collections
+        endcase
+        if section.settings.sort == 'products_high' or section.settings.sort == 'date_reversed'
+          assign list = list | reverse
+        endif
+      -%}
+      <ul class="grid" role="list" style="--cols: {{ section.settings.columns }};">
+        {%- for collection in list -%}
+          <li data-reveal style="--reveal-index: {{ forloop.index0 | modulo: 8 }};">
+            <a href="{{ collection.url }}" class="collection-card">
+              <div class="media media--portrait">
+                {%- if collection.featured_image -%}
+                  {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 1100px) 25vw, 50vw', alt: collection.title | escape }}
+                {%- else -%}
+                  {{ 'collection-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {%- endif -%}
+              </div>
+              <div class="collection-card__overlay"></div>
+              <div class="collection-card__info">
+                <div>
+                  <h2 class="collection-card__title">{{ collection.title | escape }}</h2>
+                  <span class="collection-card__count">{{ 'sections.collection_list.products_count' | t: count: collection.products_count }}</span>
+                </div>
+                <span class="collection-card__arrow">{% render 'icon', name: 'arrow-up-right' %}</span>
+              </div>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
   </div>
 </div>
 
@@ -54,9 +111,16 @@
   "settings": [
     { "type": "text", "id": "title", "label": "Titre", "default": "Toutes les catégories" },
     {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu de rangement",
+      "default": "main-menu",
+      "info": "Chaque élément du menu qui pointe vers une collection et possède des sous-éléments devient un groupe (ex. Chiens > Laisses, Jouets…). Sans menu, toutes les collections sont listées."
+    },
+    {
       "type": "select",
       "id": "sort",
-      "label": "Trier par",
+      "label": "Trier par (sans menu)",
       "options": [
         { "value": "alphabetical", "label": "Ordre alphabétique" },
         { "value": "products_high", "label": "Nombre de produits (décroissant)" },
