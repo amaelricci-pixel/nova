@@ -44,7 +44,14 @@
         },
         "delivery": {
           "type": "delivery",
-          "settings": {}
+          "settings": {
+            "icon_1": "truck",
+            "line_1": "<strong>Livraison offerte</strong> en France",
+            "icon_2": "clock",
+            "line_2": "Livraison en 7 à 15 jours ouvrés environ",
+            "icon_3": "return",
+            "line_3": "<strong>14 jours</strong> pour changer d'avis"
+          }
         },
         "description": {
           "type": "description",
@@ -56,7 +63,7 @@
           "type": "collapsible_tab",
           "settings": {
             "heading": "Livraison & retours",
-            "content": "<p>Renseignez ici vos conditions réelles de livraison et de retour, ou sélectionnez une page.</p>"
+            "content": "<h3>Livraison</h3><ul><li><strong>Livraison offerte</strong> en France métropolitaine, sans minimum d'achat.</li><li><strong>Préparation :</strong> votre commande est expédiée sous 1 à 4 jours ouvrés.</li><li><strong>Délai de livraison :</strong> environ 7 à 15 jours ouvrés après l'expédition.</li><li><strong>Suivi :</strong> un numéro de suivi vous est envoyé par e-mail dès l'expédition.</li><li>Nous livrons uniquement en France pour le moment.</li></ul><h3>Retours</h3><ul><li><strong>14 jours pour changer d'avis</strong> à compter de la réception de votre commande (droit de rétractation).</li><li>L'article doit être neuf, non utilisé et dans son emballage d'origine.</li><li>Contactez-nous d'abord via la page <a href=\"/pages/contact\">Contact</a> : nous vous indiquerons l'adresse de retour.</li><li>Les frais de retour sont à votre charge.</li><li><strong>Remboursement</strong> sous 14 jours maximum après réception du retour, sur votre moyen de paiement d'origine.</li></ul><h3>Article abîmé ou non conforme ?</h3><p>Écrivez-nous dans les 48 h suivant la réception, avec une photo : nous vous proposerons un remplacement ou un remboursement, sans frais pour vous. Vous bénéficiez également de la garantie légale de conformité.</p>"
           }
         },
         "share": {
