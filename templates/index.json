@@ -34,14 +34,16 @@
           "settings": {
             "image": "shopify://shop_images/grey-cat-with-blue-eyes.jpg",
             "image_mobile": "shopify://shop_images/green-cat-eyes.jpg",
-            "eyebrow": "Promenade",
-            "heading": "Chaque sortie, <em>en toute sécurité</em>",
-            "text": "<p>Harnais, laisses et accessoires lumineux pour des balades sereines, de jour comme de nuit.</p>",
-            "button_label": "Équipement promenade",
-            "button_link": "",
+            "eyebrow": "Toilettage",
+            "heading": "Un pelage <em>tout doux</em>, sans poils partout",
+            "text": "<p>Brosses et soins pour chouchouter votre chat et garder la maison propre.</p>",
+            "button_label": "Hygiène & toilettage",
+            "button_link": "shopify://collections/hygiene-toilettage-pour-chat",
             "button_label_2": "Voir les offres",
             "button_link_2": "",
-            "alignment": "left"
+            "alignment": "left",
+            "product": "brosse-de-toilettage-et-massage-pour-chat",
+            "product_label": "Spécial chat"
           }
         }
       },
