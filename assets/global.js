@@ -594,6 +594,14 @@
           });
         });
       }
+      // Lien direct vers une couleur (?variant=…) : ouvre la galerie sur sa photo
+      if (this.dataset.initialMedia) {
+        const start = this.slides.findIndex((sl) => sl.dataset.mediaId === this.dataset.initialMedia);
+        if (start > 0) {
+          this.index = start;
+          requestAnimationFrame(() => { this.track.scrollLeft = this.slides[start].offsetLeft - this.track.offsetLeft; });
+        }
+      }
       this.update();
     }
 
@@ -717,6 +725,41 @@
     }
   }
   customElements.define('collection-filters', CollectionFilters);
+
+  /* ---------- Pastilles de couleur des cartes produits ---------- */
+
+  // Survol ou clic sur une pastille : affiche la photo de cette couleur
+  // et fait pointer la carte vers la variante correspondante.
+  const selectCardSwatch = (swatch) => {
+    const card = swatch.closest('.card');
+    if (!card) return;
+    card.querySelectorAll('.card__swatch').forEach((s) => s.setAttribute('aria-pressed', s === swatch ? 'true' : 'false'));
+    if (swatch.dataset.image) card.classList.add('has-swatch-selected');
+    const img = card.querySelector('.card__media .media img');
+    if (img && swatch.dataset.image) {
+      if (!img.dataset.originalSrc) {
+        img.dataset.originalSrc = img.src;
+        img.dataset.originalSrcset = img.getAttribute('srcset') || '';
+      }
+      if (swatch.dataset.srcset) img.setAttribute('srcset', swatch.dataset.srcset);
+      img.src = swatch.dataset.image;
+    }
+    if (swatch.dataset.variantUrl) {
+      card.querySelectorAll('.card__title a, .card__quick-add a').forEach((a) => (a.href = swatch.dataset.variantUrl));
+    }
+  };
+
+  document.addEventListener('click', (e) => {
+    const swatch = e.target.closest('.card__swatch');
+    if (!swatch) return;
+    e.preventDefault();
+    selectCardSwatch(swatch);
+  });
+  document.addEventListener('pointerover', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    const swatch = e.target.closest('.card__swatch');
+    if (swatch) selectCardSwatch(swatch);
+  });
 
   /* ---------- Initialisation ---------- */
 

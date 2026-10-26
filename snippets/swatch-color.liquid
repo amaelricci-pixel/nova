@@ -1,0 +1,78 @@
+{%- comment -%}
+  Renvoie la valeur CSS (couleur ou image) d'une pastille de couleur.
+  Ordre de priorité :
+  1. pastille définie dans Shopify (Produits > option Couleur > pastille : image ou couleur) ;
+  2. nom de la couleur reconnu (français ou anglais) ;
+  3. gris neutre.
+  Utilisation : {%- capture c -%}{% render 'swatch-color', value: value %}{%- endcapture -%}
+{%- endcomment -%}
+{%- liquid
+  assign key = value.name | default: value | handle
+  if value.swatch.image
+    assign swatch_url = value.swatch.image | image_url: width: 80
+    assign key = 'shopify-swatch-image'
+  elsif value.swatch.color
+    assign key = 'shopify-swatch-color'
+  endif
+
+  case key
+    when 'shopify-swatch-image'
+      echo 'url(' | append: swatch_url | append: ') center / cover'
+    when 'shopify-swatch-color'
+      echo value.swatch.color
+    when 'noir', 'black', 'noir-mat'
+      echo '#111214'
+    when 'blanc', 'white', 'ivoire', 'ivory', 'creme', 'cream'
+      echo '#F5F5F2'
+    when 'gris', 'grey', 'gray', 'gris-clair', 'light-grey', 'light-gray'
+      echo '#A3A8B0'
+    when 'gris-fonce', 'dark-grey', 'dark-gray', 'anthracite', 'charcoal'
+      echo '#4A4F57'
+    when 'argent', 'silver'
+      echo 'linear-gradient(135deg, #f2f2f2, #a9adb3)'
+    when 'or', 'dore', 'gold', 'golden'
+      echo 'linear-gradient(135deg, #f6e27a, #c79a2b)'
+    when 'bleu', 'blue', 'bleu-roi', 'royal-blue'
+      echo '#1F6BFF'
+    when 'bleu-marine', 'marine', 'navy', 'navy-blue', 'dark-blue', 'bleu-fonce'
+      echo '#1E2A4A'
+    when 'bleu-clair', 'light-blue', 'bleu-ciel', 'sky-blue', 'ciel'
+      echo '#8EC5FF'
+    when 'turquoise', 'cyan', 'aqua', 'bleu-turquoise'
+      echo '#1FC8C8'
+    when 'vert', 'green', 'vert-fonce', 'dark-green'
+      echo '#22A559'
+    when 'vert-clair', 'light-green', 'vert-menthe', 'mint', 'menthe'
+      echo '#8FE3B5'
+    when 'kaki', 'khaki', 'vert-kaki', 'army-green', 'olive'
+      echo '#6B7040'
+    when 'jaune', 'yellow'
+      echo '#FFD60A'
+    when 'jaune-fluo', 'fluorescent-yellow', 'jaune-fluorescent', 'neon-yellow', 'fluo'
+      echo '#D7FF1F'
+    when 'orange', 'orange-fluo', 'fluorescent-orange'
+      echo '#FF7A1A'
+    when 'rouge', 'red'
+      echo '#E5383B'
+    when 'bordeaux', 'burgundy', 'wine', 'wine-red'
+      echo '#7A1F2B'
+    when 'rose', 'pink', 'rose-red', 'rose-vif', 'hot-pink', 'fuchsia'
+      echo '#FF4F9A'
+    when 'rose-pale', 'rose-clair', 'light-pink', 'baby-pink', 'pastel-pink'
+      echo '#FFC2D9'
+    when 'violet', 'purple', 'mauve', 'lilas', 'lavande', 'lavender'
+      echo '#8B5CF6'
+    when 'marron', 'brown', 'chocolat', 'coffee', 'cafe'
+      echo '#7A4A2A'
+    when 'beige', 'sable', 'sand', 'khaki-beige', 'nude'
+      echo '#E2D2B4'
+    when 'camel', 'caramel', 'tan'
+      echo '#C19A6B'
+    when 'multicolore', 'multicolor', 'multi', 'mixed', 'arc-en-ciel', 'rainbow'
+      echo 'conic-gradient(#ff4f9a, #ffd60a, #22a559, #1f6bff, #8b5cf6, #ff4f9a)'
+    when 'transparent', 'clear'
+      echo 'repeating-linear-gradient(45deg, #fff 0 4px, #e3e5e8 4px 8px)'
+    else
+      echo '#D9DCE1'
+  endcase
+-%}

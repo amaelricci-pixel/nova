@@ -130,22 +130,37 @@
     {%- endif -%}
     {% render 'price', product: product %}
     {%- if color_option and color_option.values.size > 1 -%}
-      <div class="card__swatches" aria-label="{{ color_option.name | escape }}">
-        {%- for value in color_option.values limit: 5 -%}
+      {%- assign color_key = 'option' | append: color_option.position -%}
+      <div class="card__swatches" role="group" aria-label="{{ color_option.name | escape }}">
+        {%- for value in color_option.values limit: 6 -%}
           {%- liquid
-            assign swatch_name = value.name | downcase | remove: ' '
-            assign swatch_style = '--swatch: ' | append: swatch_name
-            if value.swatch.image
-              assign swatch_url = value.swatch.image | image_url: width: 40
-              assign swatch_style = '--swatch: url(' | append: swatch_url | append: ')'
-            elsif value.swatch.color
-              assign swatch_style = '--swatch: ' | append: value.swatch.color
-            endif
+            assign swatch_variant = nil
+            for v in product.variants
+              if v[color_key] == value.name
+                assign swatch_variant = v
+                break
+              endif
+            endfor
           -%}
-          <span class="card__swatch" style="{{ swatch_style }};" title="{{ value | escape }}"></span>
+          {%- capture swatch_value -%}{% render 'swatch-color', value: value %}{%- endcapture -%}
+          <button
+            type="button"
+            class="card__swatch"
+            style="--swatch: {{ swatch_value | strip }};"
+            title="{{ value | escape }}"
+            aria-label="{{ value | escape }}"
+            aria-pressed="false"
+            {%- if swatch_variant %}
+              data-variant-url="{{ swatch_variant.url }}"
+              {%- if swatch_variant.featured_media %}
+                data-image="{{ swatch_variant.featured_media | image_url: width: 900 }}"
+                data-srcset="{{ swatch_variant.featured_media | image_url: width: 360 }} 360w, {{ swatch_variant.featured_media | image_url: width: 480 }} 480w, {{ swatch_variant.featured_media | image_url: width: 640 }} 640w, {{ swatch_variant.featured_media | image_url: width: 900 }} 900w"
+              {%- endif -%}
+            {%- endif %}
+          ></button>
         {%- endfor -%}
-        {%- if color_option.values.size > 5 -%}
-          <span class="card__more">+{{ color_option.values.size | minus: 5 }}</span>
+        {%- if color_option.values.size > 6 -%}
+          <span class="card__more">+{{ color_option.values.size | minus: 6 }}</span>
         {%- endif -%}
       </div>
     {%- endif -%}
