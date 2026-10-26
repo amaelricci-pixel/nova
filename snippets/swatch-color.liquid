@@ -3,7 +3,8 @@
   Ordre de priorité :
   1. pastille définie dans Shopify (Produits > option Couleur > pastille : image ou couleur) ;
   2. nom de la couleur reconnu (français ou anglais) ;
-  3. gris neutre.
+  3. premier mot du nom (« Marron à motifs » → marron) ;
+  4. gris neutre.
   Utilisation : {%- capture c -%}{% render 'swatch-color', value: value %}{%- endcapture -%}
 {%- endcomment -%}
 {%- liquid
@@ -73,6 +74,11 @@
     when 'transparent', 'clear'
       echo 'repeating-linear-gradient(45deg, #fff 0 4px, #e3e5e8 4px 8px)'
     else
-      echo '#D9DCE1'
+      assign first_word = key | split: '-' | first
+      if first_word != blank and first_word != key
+        render 'swatch-color', value: first_word
+      else
+        echo '#D9DCE1'
+      endif
   endcase
 -%}
