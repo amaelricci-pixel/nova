@@ -983,3 +983,21 @@ h4, .h4 { font-size: var(--fs-h4); line-height: 1.3; letter-spacing: -0.01em; }
 /* Une couleur choisie sur la carte remplace la photo de survol */
 .card.has-swatch-selected .card__media .media img + img { opacity: 0 !important; }
 .card.has-swatch-selected .card__media .media img:first-child { opacity: 1 !important; }
+
+/* Photos produit : toujours affichées en entier (pas de rognage), sur fond blanc */
+.card__media .media,
+.product-gallery__slide .media:not(.media--video),
+.product-gallery__thumb .media,
+.hero__product-media,
+.cart-item .media,
+.cart-upsell__item .media,
+.predictive__product .media,
+.sticky-atc__media { background: #fff; }
+.card__media .media > img,
+.product-gallery__slide .media > img,
+.product-gallery__thumb .media > img,
+.hero__product-media img,
+.cart-item .media > img,
+.cart-upsell__item .media > img,
+.predictive__product .media > img,
+.sticky-atc__media > img { object-fit: contain; }
