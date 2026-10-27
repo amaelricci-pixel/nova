@@ -135,16 +135,66 @@
       this.addMessage('user', question);
       this.lastQuestion = question;
       const typing = this.addMessage('bot', '<span class="bot__typing"><span></span><span></span><span></span></span>');
-      setTimeout(() => {
+      const wait = new Promise((resolve) => setTimeout(resolve, 650));
+      const products = answer ? Promise.resolve([]) : this.searchProducts(question);
+      Promise.all([wait, products]).then(([, found]) => {
         typing.remove();
         if (answer) {
+          this.misses = 0;
           this.addMessage('bot', answer.html);
-          this.addFollowup();
+          // Pas de « ça répond à votre question ? » après un simple bonjour ou merci
+          const text = answer.html.replace(/<[^>]+>/g, '').trim();
+          if (text.length > 110) this.addFollowup();
+        } else if (found.length) {
+          this.misses = 0;
+          this.addProducts(found, question);
         } else {
+          this.misses = (this.misses || 0) + 1;
           this.addMessage('bot', this.fallbackHtml);
-          this.showHandoff();
+          // Le formulaire ne s'ouvre tout seul qu'après deux questions sans réponse
+          if (this.misses >= 2) this.showHandoff();
+          else this.chips.hidden = false;
         }
-      }, 650);
+      });
+    }
+
+    async searchProducts(question) {
+      const route = window.NOVA && NOVA.routes && NOVA.routes.predictiveSearch;
+      if (!route) return [];
+      const stop = new Set(['avez', 'vous', 'est', 'que', 'qui', 'quoi', 'des', 'les', 'une', 'pour', 'mon', 'mes', 'ma', 'votre', 'vos', 'avec', 'dans', 'sur', 'pas', 'plus', 'cherche', 'recherche', 'voudrais', 'veux', 'aimerais', 'acheter', 'trouver', 'vendez', 'faites', 'quel', 'quelle', 'quels', 'quelles', 'bonjour', 'merci', 'svp', 'stp', 'il', 'elle', 'chose', 'truc', 'produit', 'produits', 'chien', 'chiens', 'chat', 'chats']);
+      const words = normalize(question)
+        .split(' ')
+        .filter((w) => w.length >= 4 && !stop.has(w))
+        .slice(0, 3);
+      for (const word of words) {
+        try {
+          const url = `${route}.json?q=${encodeURIComponent(word)}&resources[type]=product&resources[limit]=3&resources[options][fields]=title,product_type,tag,variants.title`;
+          const res = await fetch(url, { headers: { Accept: 'application/json' } });
+          if (!res.ok) continue;
+          const data = await res.json();
+          const list = (data.resources && data.resources.results && data.resources.results.products) || [];
+          if (list.length) return list;
+        } catch (e) {
+          return [];
+        }
+      }
+      return [];
+    }
+
+    addProducts(products, question) {
+      const money = (value) => {
+        const n = Number(String(value).replace(',', '.'));
+        return Number.isFinite(n) ? n.toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' }) : value;
+      };
+      const items = products
+        .map((p) => {
+          const img = p.image ? `<img src="${p.image}${p.image.includes('?') ? '&' : '?'}width=120" alt="" loading="lazy" width="56" height="56">` : '';
+          const title = String(p.title).replace(/</g, '&lt;');
+          return `<a class="bot__product" href="${p.url}">${img}<span><strong>${title}</strong><span>${money(p.price)}</span></span></a>`;
+        })
+        .join('');
+      const searchUrl = `${(window.NOVA && NOVA.routes && NOVA.routes.root) || '/'}search?q=${encodeURIComponent(question)}&type=product`;
+      this.addMessage('bot', `<p>Voici ce que j'ai trouvé dans la boutique :</p><div class="bot__products">${items}</div><p><a href="${searchUrl.replace('//search', '/search')}">Voir tous les résultats</a></p>`);
     }
 
     addFollowup() {

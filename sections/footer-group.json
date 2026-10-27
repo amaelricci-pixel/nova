@@ -49,7 +49,7 @@
           "type": "answer",
           "settings": {
             "label": "Suivre ma commande",
-            "keywords": "suivi, suivre, colis, tracking, numero de suivi, numéro de suivi, ou est, où est, pas recu, pas reçu, toujours pas, ma commande, retard",
+            "keywords": "suivi, suivre, colis, tracking, numero de suivi, numéro de suivi, ou est, où est, pas recu, pas reçu, toujours pas, retard, pas arrive, arrive pas, pas encore arrive, toujours rien",
             "answer": "<p>📦 Dès l'expédition, vous recevez un e-mail avec votre <strong>numéro de suivi</strong>. Vous retrouvez aussi vos commandes dans votre <strong>compte NOVA</strong> (icône 👤 en haut de la page).</p><p>Si votre colis n'est pas arrivé après 15 jours ouvrés, écrivez-nous avec votre numéro de commande.</p>"
           }
         },
@@ -108,6 +108,142 @@
             "keywords": "etranger, étranger, belgique, suisse, luxembourg, international, europe, hors de france, dom tom, outre mer, pays, canada",
             "answer": "<p>🌍 Pour le moment, NOVA livre <strong>uniquement en France</strong>.</p>"
           }
+        },
+        "answer-10": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "bonjour, bonsoir, salut, hello, coucou, hey, yo, bjr, slt",
+            "answer": "<p>Bonjour 👋 Que puis-je faire pour vous ? Posez votre question ou choisissez un sujet ci-dessous.</p>"
+          }
+        },
+        "answer-11": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "merci, merci beaucoup, super, parfait, top, genial, génial, cool, ok, d accord, daccord, nickel",
+            "answer": "<p>Avec plaisir ! 🐾 N'hésitez pas si vous avez une autre question.</p>"
+          }
+        },
+        "answer-12": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "au revoir, bye, a bientot, à bientôt, bonne journee, bonne journée, bonne soiree, bonne soirée",
+            "answer": "<p>À bientôt sur NOVA ! 🐶🐱</p>"
+          }
+        },
+        "answer-13": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "qui etes vous, qui êtes vous, c est quoi nova, vous etes qui, vous êtes qui, presentation, a propos, à propos",
+            "answer": "<p>NOVA est une boutique en ligne d'accessoires pour <strong>chiens et chats</strong> : couchage, gamelles, laisses, toilettage, jouets… Livraison offerte en France.</p>"
+          }
+        },
+        "answer-14": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "robot, humain, une personne, conseiller, vrai personne, parler a quelqu un, parler à quelqu'un, joindre, contacter, contact, telephone, téléphone, appeler, numero, numéro, mail, email, e mail",
+            "answer": "<p>Je suis l'assistant automatique de NOVA 🤖. Pour parler à l'équipe, utilisez le bouton <strong>« Écrire à l'équipe »</strong> : nous répondons par e-mail. Nous ne proposons pas d'assistance par téléphone.</p>"
+          }
+        },
+        "answer-15": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "annuler, annulation, modifier ma commande, modifier la commande, changer ma commande, changer d adresse, changer l adresse, mauvaise adresse, erreur d adresse, oublie, oublié, annuler ma commande, annuler la commande, annuler une commande",
+            "answer": "<p>Pour annuler ou modifier une commande (produit, adresse…), écrivez-nous <strong>au plus vite</strong> avec votre numéro de commande via « Écrire à l'équipe ». Une fois le colis expédié, il n'est plus possible de la modifier.</p>"
+          }
+        },
+        "answer-16": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "facture, recu, reçu, justificatif, ticket",
+            "answer": "<p>🧾 Votre e-mail de confirmation de commande sert de justificatif. Vous retrouvez aussi le détail de vos commandes dans votre compte NOVA. Besoin d'une facture ? Écrivez-nous avec votre numéro de commande.</p>"
+          }
+        },
+        "answer-17": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "garantie, garanti, sav, service apres vente, service après-vente, conformite, conformité",
+            "answer": "<p>Tous nos produits bénéficient de la <strong>garantie légale de conformité de 2 ans</strong>. En cas de souci, écrivez-nous avec votre numéro de commande et une photo du problème.</p>"
+          }
+        },
+        "answer-18": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "stock, disponible, disponibilite, disponibilité, rupture, en stock, epuise, épuisé, reassort, réassort",
+            "answer": "<p>Si un produit et sa variante (couleur, taille) peuvent être ajoutés au panier, ils sont <strong>disponibles</strong>. Une option grisée n'est pas disponible pour le moment.</p>"
+          }
+        },
+        "answer-19": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "entretien, laver, lavage, lavable, machine, nettoyer, nettoyage, matiere, matière, composition",
+            "answer": "<p>🧺 Les matières et conseils d'entretien sont indiqués dans la <strong>description de chaque produit</strong>, rubrique « Caractéristiques ». En cas de doute, lavez à la main à l'eau tiède.</p>"
+          }
+        },
+        "answer-20": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "lapin, hamster, oiseau, poisson, cochon d inde, rongeur, furet, nac, autre animal, autres animaux",
+            "answer": "<p>Nos produits sont pensés pour les <strong>chiens et les chats</strong>. Quand un produit convient aussi à d'autres animaux (lapins, petits rongeurs…), c'est précisé sur sa fiche.</p>"
+          }
+        },
+        "answer-21": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "express, rapide, plus vite, point relais, relais, colissimo, chronopost, mondial relay, transporteur, domicile",
+            "answer": "<p>Nous proposons une seule option : la <strong>livraison standard offerte</strong>, avec numéro de suivi. Il n'y a pas de livraison express pour le moment.</p>"
+          }
+        },
+        "answer-22": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "cadeau, offrir, emballage, paquet cadeau, carte cadeau",
+            "answer": "<p>🎁 Il n'y a pas d'emballage cadeau ni de carte cadeau pour le moment. Vous pouvez tout de même faire livrer la commande à l'adresse de votre choix.</p>"
+          }
+        },
+        "answer-23": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "prix, cher, tarif, tarifs, combien, combien ca coute, combien ça coûte, ttc, taxe, taxes, frais caches, frais cachés, douane",
+            "answer": "<p>💶 Le prix affiché sur la fiche est le prix que vous payez, en euros, et la <strong>livraison est offerte</strong> en France. Pas de frais cachés ni de frais de douane.</p>"
+          }
+        },
+        "answer-24": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "newsletter, actualites, actualités, nouveautes, nouveautés, promotions, soldes, bon plan, bons plans",
+            "answer": "<p>📬 Inscrivez-vous à la <strong>newsletter</strong> en bas de la page d'accueil pour recevoir nos nouveautés et nos offres.</p>"
+          }
+        },
+        "answer-25": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "avis, commentaires, note, fiable, arnaque, serieux, sérieux, confiance",
+            "answer": "<p>✅ Paiement sécurisé par Shopify, suivi de colis, 14 jours pour changer d'avis et garantie légale de 2 ans. Les avis clients apparaîtront sur les fiches produits au fil des commandes.</p>"
+          }
+        },
+        "answer-26": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "conseil, conseiller, recommander, recommandez, que choisir, idee, idée, besoin d aide pour choisir",
+            "answer": "<p>Dites-moi ce que vous cherchez (par exemple « panier pour chat » ou « laisse ») et je vous montre nos produits. Vous pouvez aussi parcourir les rubriques <strong>Chiens</strong> et <strong>Chats</strong> dans le menu.</p>"
+          }
         }
       },
       "block_order": [
@@ -119,10 +255,28 @@
         "answer-6",
         "answer-7",
         "answer-8",
-        "answer-9"
+        "answer-9",
+        "answer-10",
+        "answer-11",
+        "answer-12",
+        "answer-13",
+        "answer-14",
+        "answer-15",
+        "answer-16",
+        "answer-17",
+        "answer-18",
+        "answer-19",
+        "answer-20",
+        "answer-21",
+        "answer-22",
+        "answer-23",
+        "answer-24",
+        "answer-25",
+        "answer-26"
       ],
       "settings": {
-        "enabled": true
+        "enabled": true,
+        "fallback": "<p>Je ne suis pas sûr d'avoir compris 🤔 Essayez avec d'autres mots, ou choisissez un sujet ci-dessous. Si besoin, vous pouvez écrire à l'équipe.</p>"
       }
     }
   },

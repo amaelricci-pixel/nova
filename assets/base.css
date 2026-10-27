@@ -1284,3 +1284,10 @@ a, button, summary, label { -webkit-tap-highlight-color: transparent; }
 }
 @media (min-width: 990px) { .bot { transition: transform var(--duration) var(--ease); } body:has(.sticky-atc.is-visible) .bot:not(.is-open) { transform: translateY(-72px); } }
 @media print { .bot { display: none; } }
+.bot__products { display: grid; gap: 8px; margin-top: 8px; }
+.bot__product { display: flex; align-items: center; gap: 10px; padding: 6px; border-radius: 12px; background: var(--color-surface); text-decoration: none !important; transition: background var(--duration-fast); }
+.bot__product:hover { background: var(--tint-blue); }
+.bot__product img { width: 56px; height: 56px; object-fit: contain; border-radius: 10px; background: #fff; flex-shrink: 0; }
+.bot__product > span { display: grid; gap: 2px; font-size: 13px; line-height: 1.3; }
+.bot__product strong { font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.bot__product > span > span { color: var(--color-accent); font-weight: 700; }
