@@ -78,6 +78,7 @@
       <template data-bot-followup>{{ section.settings.followup | escape }}</template>
     </support-bot>
   {%- endform -%}
+  <script src="{{ 'support-bot-glossary.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'support-bot.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 

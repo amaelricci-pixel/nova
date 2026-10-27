@@ -276,7 +276,8 @@
       ],
       "settings": {
         "enabled": true,
-        "fallback": "<p>Je ne suis pas sûr d'avoir compris 🤔 Essayez avec d'autres mots, ou choisissez un sujet ci-dessous. Si besoin, vous pouvez écrire à l'équipe.</p>"
+        "fallback": "<p>Je ne suis pas sûr d'avoir compris 🤔 Essayez avec d'autres mots, ou choisissez un sujet ci-dessous. Si besoin, vous pouvez écrire à l'équipe.</p>",
+        "greeting": "<p>Bonjour 👋 Je suis l'assistant NOVA. Posez-moi vos questions sur votre commande, la livraison… ou sur vos animaux (« c'est quoi un harnais ? », « à quoi sert un griffoir ? »).</p>"
       }
     }
   },
