@@ -103,7 +103,7 @@
             {% render 'icon', name: 'search' %}
           </button>
           {%- if shop.customer_accounts_enabled -%}
-            <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="icon-button hide-mobile" aria-label="{{ 'customer.account.title' | t }}">
+            <a href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}" class="icon-button" aria-label="{{ 'customer.account.title' | t }}">
               {% render 'icon', name: 'account' %}
             </a>
           {%- endif -%}

@@ -179,10 +179,10 @@
       "settings": {
         "eyebrow": "Offre limitée",
         "heading": "-15 % sur votre première commande",
-        "text": "<p>Utilisez le code ci-dessous lors du paiement.</p>",
-        "code": "",
+        "text": "<p>Entrez ce code au paiement : -15 % sur toute votre première commande, livraison offerte incluse.</p>",
+        "code": "BIENVENUE15",
         "button_label": "J'en profite",
-        "button_link": "",
+        "button_link": "shopify://collections/all",
         "end_date": "",
         "countdown_label": "Se termine dans",
         "hide_when_expired": true
