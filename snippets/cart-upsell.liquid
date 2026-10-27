@@ -1,0 +1,62 @@
+{%- comment -%}
+  « Vous aimerez aussi » : produits de la même catégorie que le premier article du panier.
+{%- endcomment -%}
+{%- if settings.cart_show_upsell and cart.item_count > 0 -%}
+  {%- liquid
+    assign source = nil
+    for item in cart.items
+      for c in item.product.collections
+        unless c.handle == 'frontpage' or c.handle == 'all' or c.handle == 'chiens' or c.handle == 'chats'
+          assign source = c
+          break
+        endunless
+      endfor
+      if source
+        break
+      endif
+    endfor
+    if source == nil
+      assign source = cart.items.first.product.collections.first
+    endif
+    assign in_cart = cart.items | map: 'product_id' | join: ','
+    assign in_cart = ',' | append: in_cart | append: ','
+    assign shown = 0
+  -%}
+  {%- if source and source.products_count > 1 -%}
+    {%- capture upsell_items -%}
+      {%- for product in source.products limit: 12 -%}
+        {%- assign needle = ',' | append: product.id | append: ',' -%}
+        {%- if product.available and shown < 3 -%}
+          {%- unless in_cart contains needle -%}
+            {%- assign shown = shown | plus: 1 -%}
+            <div class="cart-upsell__item">
+              <a href="{{ product.url }}" class="media media--square" tabindex="-1" aria-hidden="true">
+                {%- if product.featured_media -%}{{ product.featured_media | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}
+              </a>
+              <div>
+                <a href="{{ product.url }}" class="cart-upsell__name">{{ product.title | escape }}</a>
+                <span class="cart-upsell__price">{{ product.price | money }}</span>
+              </div>
+              {%- if product.has_only_default_variant -%}
+                <product-form data-ajax="true">
+                  {%- form 'product', product, id: nil, novalidate: 'novalidate' -%}
+                    <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+                    <button type="submit" class="icon-button cart-upsell__add" aria-label="{{ 'products.product.add_to_cart' | t }} — {{ product.title | escape }}">{% render 'icon', name: 'plus' %}</button>
+                  {%- endform -%}
+                </product-form>
+              {%- else -%}
+                <a href="{{ product.url }}" class="icon-button cart-upsell__add" aria-label="{{ 'products.product.choose_options' | t }} — {{ product.title | escape }}">{% render 'icon', name: 'arrow-right' %}</a>
+              {%- endif -%}
+            </div>
+          {%- endunless -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    {%- if shown > 0 -%}
+      <div class="cart-upsell">
+        <p class="cart-upsell__title">Vous aimerez aussi</p>
+        <div class="cart-upsell__list">{{ upsell_items }}</div>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}

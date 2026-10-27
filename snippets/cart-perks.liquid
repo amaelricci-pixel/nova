@@ -1,0 +1,8 @@
+{%- comment -%} Avantages affichés dans le récapitulatif du panier {%- endcomment -%}
+{%- if settings.cart_show_shipping_line -%}
+  <div class="cart-summary__row cart-summary__shipping">
+    <span>{% render 'icon', name: 'truck' %} Livraison en France</span>
+    <span>Offerte</span>
+  </div>
+{%- endif -%}
+{% render 'welcome-code', class: 'welcome-code--compact' %}

@@ -1,0 +1,11 @@
+{%- comment -%} Carte produit renvoyée à la section « Vus récemment » (Section Rendering API) {%- endcomment -%}
+{%- if product -%}
+  <div role="listitem" data-recently-item>{% render 'product-card', product: product %}</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Vu récemment (carte)",
+  "settings": []
+}
+{% endschema %}

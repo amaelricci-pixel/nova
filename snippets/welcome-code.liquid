@@ -1,0 +1,26 @@
+{%- comment -%}
+  Rappel du code de bienvenue, seulement pour les clients qui n'ont pas encore commandé.
+  Paramètres : class (optionnel)
+{%- endcomment -%}
+{%- liquid
+  assign show_code = true
+  if settings.welcome_code == blank
+    assign show_code = false
+  endif
+  if customer and customer.orders_count > 0
+    assign show_code = false
+  endif
+  if cart.cart_level_discount_applications.size > 0
+    assign show_code = false
+  endif
+-%}
+{%- if show_code -%}
+  <div class="welcome-code {{ class }}">
+    <span class="welcome-code__icon" aria-hidden="true">{% render 'icon', name: 'gift' %}</span>
+    <p class="welcome-code__text">
+      <strong>{{ settings.welcome_code_label | escape }}</strong>
+      <span>avec le code <b>{{ settings.welcome_code | escape }}</b> au paiement</span>
+    </p>
+    <button type="button" class="welcome-code__copy" data-copy="{{ settings.welcome_code | escape }}" data-copied-label="Copié !">Copier</button>
+  </div>
+{%- endif -%}

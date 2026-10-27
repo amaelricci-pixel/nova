@@ -780,3 +780,83 @@
     }
   });
 })();
+
+/* ---------- Date de livraison estimée (jours ouvrés, hors week-ends) ---------- */
+(() => {
+  if (customElements.get('delivery-estimate')) return;
+  const addWorkingDays = (from, days) => {
+    const date = new Date(from);
+    let added = 0;
+    while (added < days) {
+      date.setDate(date.getDate() + 1);
+      const day = date.getDay();
+      if (day !== 0 && day !== 6) added += 1;
+    }
+    return date;
+  };
+  class DeliveryEstimate extends HTMLElement {
+    connectedCallback() {
+      const min = parseInt(this.dataset.min, 10);
+      const max = parseInt(this.dataset.max, 10);
+      const target = this.querySelector('[data-estimate]');
+      if (!target || !min || !max) return;
+      const today = new Date();
+      const fmt = new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short' });
+      const escape = (str) => String(str).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      target.innerHTML = `${escape(target.dataset.prefix || '')} <strong>${fmt.format(addWorkingDays(today, min))}</strong> et le <strong>${fmt.format(addWorkingDays(today, max))}</strong>`;
+    }
+  }
+  customElements.define('delivery-estimate', DeliveryEstimate);
+})();
+
+/* ---------- Produits vus récemment (mémorisés dans le navigateur) ---------- */
+(() => {
+  const KEY = 'nova:recently-viewed';
+  const read = () => {
+    try {
+      return JSON.parse(localStorage.getItem(KEY)) || [];
+    } catch (e) {
+      return [];
+    }
+  };
+  const current = document.querySelector('[data-recently-viewed-current]');
+  if (current) {
+    const handle = current.dataset.recentlyViewedCurrent;
+    const list = [handle, ...read().filter((h) => h !== handle)].slice(0, 12);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(list));
+    } catch (e) {
+      /* stockage indisponible : on ignore */
+    }
+  }
+
+  if (customElements.get('recently-viewed')) return;
+  class RecentlyViewed extends HTMLElement {
+    async connectedCallback() {
+      const exclude = this.dataset.exclude;
+      const limit = parseInt(this.dataset.limit, 10) || 4;
+      const handles = read().filter((h) => h !== exclude).slice(0, limit);
+      if (!handles.length) return;
+      const root = (this.dataset.root || '/').replace(/\/$/, '');
+      const grid = this.querySelector('[data-recently-grid]');
+      const results = await Promise.all(
+        handles.map(async (handle) => {
+          try {
+            const res = await fetch(`${root}/products/${encodeURIComponent(handle)}?section_id=recently-viewed-item`);
+            if (!res.ok) return null;
+            const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+            return doc.querySelector('[data-recently-item]');
+          } catch (e) {
+            return null;
+          }
+        })
+      );
+      results.filter(Boolean).forEach((item) => {
+        item.querySelectorAll('[data-reveal]').forEach((el) => el.classList.add('is-revealed'));
+        grid.appendChild(item);
+      });
+      if (grid.children.length) this.hidden = false;
+    }
+  }
+  customElements.define('recently-viewed', RecentlyViewed);
+})();

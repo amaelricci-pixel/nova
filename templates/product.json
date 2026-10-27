@@ -47,8 +47,8 @@
           "settings": {
             "icon_1": "truck",
             "line_1": "<strong>Livraison offerte</strong> en France",
-            "icon_2": "clock",
-            "line_2": "Livraison en 7 à 15 jours ouvrés environ",
+            "icon_2": "package",
+            "line_2": "Expédition sous 1 à 4 jours ouvrés, <strong>avec suivi</strong>",
             "icon_3": "return",
             "line_3": "<strong>14 jours</strong> pour changer d'avis"
           }
@@ -69,6 +69,22 @@
         "share": {
           "type": "share",
           "settings": {}
+        },
+        "delivery-estimate": {
+          "type": "delivery_estimate",
+          "settings": {
+            "prefix": "Commandez aujourd'hui, livré entre le",
+            "min_days": 8,
+            "max_days": 19
+          }
+        },
+        "welcome-code": {
+          "type": "welcome_code",
+          "settings": {}
+        },
+        "payment-trust": {
+          "type": "payment_trust",
+          "settings": {}
         }
       },
       "block_order": [
@@ -79,8 +95,11 @@
         "divider",
         "variants",
         "inventory",
+        "welcome-code",
         "buy",
+        "delivery-estimate",
         "delivery",
+        "payment-trust",
         "description",
         "tab-shipping",
         "share"
@@ -107,11 +126,21 @@
         "products_to_show": 4,
         "columns": 4
       }
+    },
+    "recently-viewed": {
+      "type": "recently-viewed",
+      "settings": {
+        "eyebrow": "Votre sélection",
+        "heading": "Vus récemment",
+        "limit": 4,
+        "background": "default"
+      }
     }
   },
   "order": [
     "main",
     "reviews",
-    "recommendations"
+    "recommendations",
+    "recently-viewed"
   ]
 }

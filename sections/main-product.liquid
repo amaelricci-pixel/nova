@@ -301,6 +301,20 @@
                 </button>
               </div>
 
+            {%- when 'delivery_estimate' -%}
+              <delivery-estimate class="delivery-estimate" data-min="{{ block.settings.min_days }}" data-max="{{ block.settings.max_days }}" {{ block.shopify_attributes }}>
+                {% render 'icon', name: 'package' %}
+                <p data-estimate data-prefix="{{ block.settings.prefix | escape }}">
+                  Livraison estimée : <strong>{{ block.settings.min_days }} à {{ block.settings.max_days }} jours ouvrés</strong>
+                </p>
+              </delivery-estimate>
+
+            {%- when 'welcome_code' -%}
+              <div {{ block.shopify_attributes }}>{% render 'welcome-code' %}</div>
+
+            {%- when 'payment_trust' -%}
+              <div {{ block.shopify_attributes }}>{% render 'payment-trust' %}</div>
+
             {%- when 'custom_liquid' -%}
               <div {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
           {%- endcase -%}
@@ -411,6 +425,29 @@
         { "type": "checkbox", "id": "show_quantity", "label": "Sélecteur de quantité", "default": true },
         { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Boutons de paiement express", "default": true, "info": "Apple Pay, Google Pay, Shop Pay… selon vos réglages de paiement." }
       ]
+    },
+    {
+      "type": "delivery_estimate",
+      "name": "Date de livraison estimée",
+      "limit": 1,
+      "settings": [
+        { "type": "paragraph", "content": "Calcule une fourchette de dates à partir d'aujourd'hui, en jours ouvrés (hors week-ends). Indiquez le délai total : préparation + transport." },
+        { "type": "text", "id": "prefix", "label": "Texte", "default": "Commandez aujourd'hui, livré entre le" },
+        { "type": "range", "id": "min_days", "label": "Délai minimum (jours ouvrés)", "min": 1, "max": 30, "step": 1, "default": 8 },
+        { "type": "range", "id": "max_days", "label": "Délai maximum (jours ouvrés)", "min": 2, "max": 40, "step": 1, "default": 19 }
+      ]
+    },
+    {
+      "type": "welcome_code",
+      "name": "Code de bienvenue",
+      "limit": 1,
+      "settings": [{ "type": "paragraph", "content": "Affiche le code réglé dans Paramètres du thème > Offre de bienvenue, uniquement aux clients qui n'ont pas encore commandé." }]
+    },
+    {
+      "type": "payment_trust",
+      "name": "Paiement sécurisé",
+      "limit": 1,
+      "settings": [{ "type": "paragraph", "content": "Affiche les logos des moyens de paiement activés dans Shopify." }]
     },
     {
       "type": "delivery",

@@ -19,6 +19,7 @@
         <div class="drawer__body">
           {% render 'free-shipping' %}
           {% render 'cart-line-items' %}
+          {% render 'cart-upsell' %}
 
           {%- if settings.cart_show_note -%}
             <details class="accordion mt-3">
@@ -36,6 +37,7 @@
                 <span>-{{ discount.total_allocated_amount | money }}</span>
               </div>
             {%- endfor -%}
+            {% render 'cart-perks' %}
             <div class="cart-summary__row cart-summary__total">
               <span>{{ 'cart.general.subtotal' | t }}</span>
               <span>{{ cart.total_price | money_with_currency }}</span>
@@ -47,6 +49,7 @@
                 {{ 'cart.general.checkout' | t }}
               </button>
             </form>
+            {%- if settings.cart_show_payment_icons -%}{% render 'payment-trust' %}{%- endif -%}
             <a href="{{ routes.cart_url }}" class="link" style="justify-self: center;">{{ 'cart.general.view_cart' | t }}</a>
           </div>
         </div>

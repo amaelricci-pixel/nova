@@ -171,8 +171,14 @@
         "id": "heading_case",
         "label": "Casse des titres",
         "options": [
-          { "value": "none", "label": "Normale" },
-          { "value": "uppercase", "label": "Majuscules" }
+          {
+            "value": "none",
+            "label": "Normale"
+          },
+          {
+            "value": "uppercase",
+            "label": "Majuscules"
+          }
         ],
         "default": "none"
       }
@@ -245,9 +251,18 @@
         "id": "card_image_ratio",
         "label": "Format des images",
         "options": [
-          { "value": "square", "label": "Carré" },
-          { "value": "portrait", "label": "Portrait" },
-          { "value": "adapt", "label": "Adapter à l'image" }
+          {
+            "value": "square",
+            "label": "Carré"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait"
+          },
+          {
+            "value": "adapt",
+            "label": "Adapter à l'image"
+          }
         ],
         "default": "square"
       },
@@ -292,8 +307,14 @@
         "id": "cart_type",
         "label": "Type de panier",
         "options": [
-          { "value": "drawer", "label": "Tiroir latéral (interactif)" },
-          { "value": "page", "label": "Page panier" }
+          {
+            "value": "drawer",
+            "label": "Tiroir latéral (interactif)"
+          },
+          {
+            "value": "page",
+            "label": "Page panier"
+          }
         ],
         "default": "drawer"
       },
@@ -320,6 +341,45 @@
         "type": "collection",
         "id": "cart_empty_collection",
         "label": "Collection proposée quand le panier est vide"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_shipping_line",
+        "label": "Afficher « Livraison : offerte » dans le panier",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_upsell",
+        "label": "Proposer des produits complémentaires dans le panier",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_payment_icons",
+        "label": "Afficher les moyens de paiement sous le bouton",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Offre de bienvenue",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Le code doit exister dans Shopify (Remises). Il est rappelé sur les fiches produits et dans le panier, seulement aux clients qui n'ont pas encore commandé."
+      },
+      {
+        "type": "text",
+        "id": "welcome_code",
+        "label": "Code de bienvenue",
+        "default": "BIENVENUE15"
+      },
+      {
+        "type": "text",
+        "id": "welcome_code_label",
+        "label": "Texte de l'offre",
+        "default": "-15 % sur votre 1re commande"
       }
     ]
   },
@@ -343,12 +403,42 @@
   {
     "name": "Réseaux sociaux",
     "settings": [
-      { "type": "text", "id": "social_instagram", "label": "Instagram", "placeholder": "https://instagram.com/nova" },
-      { "type": "text", "id": "social_tiktok", "label": "TikTok", "placeholder": "https://tiktok.com/@nova" },
-      { "type": "text", "id": "social_facebook", "label": "Facebook", "placeholder": "https://facebook.com/nova" },
-      { "type": "text", "id": "social_youtube", "label": "YouTube", "placeholder": "https://youtube.com/@nova" },
-      { "type": "text", "id": "social_x", "label": "X (Twitter)", "placeholder": "https://x.com/nova" },
-      { "type": "text", "id": "social_pinterest", "label": "Pinterest", "placeholder": "https://pinterest.com/nova" }
+      {
+        "type": "text",
+        "id": "social_instagram",
+        "label": "Instagram",
+        "placeholder": "https://instagram.com/nova"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok",
+        "label": "TikTok",
+        "placeholder": "https://tiktok.com/@nova"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook",
+        "label": "Facebook",
+        "placeholder": "https://facebook.com/nova"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube",
+        "label": "YouTube",
+        "placeholder": "https://youtube.com/@nova"
+      },
+      {
+        "type": "text",
+        "id": "social_x",
+        "label": "X (Twitter)",
+        "placeholder": "https://x.com/nova"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest",
+        "label": "Pinterest",
+        "placeholder": "https://pinterest.com/nova"
+      }
     ]
   },
   {

@@ -1,0 +1,11 @@
+{%- comment -%} Paiement sécurisé + logos des moyens de paiement activés dans Shopify {%- endcomment -%}
+<div class="payment-trust">
+  <p class="payment-trust__label">{% render 'icon', name: 'lock' %} Paiement 100 % sécurisé</p>
+  {%- if shop.enabled_payment_types.size > 0 -%}
+    <ul class="payment-icons" role="list">
+      {%- for type in shop.enabled_payment_types -%}
+        <li>{{ type | payment_type_svg_tag }}</li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+</div>

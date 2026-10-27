@@ -13,6 +13,7 @@
           {% render 'cart-line-items' %}
           <noscript><button type="submit" name="update" class="button button--outline mt-2">{{ 'cart.general.update' | t }}</button></noscript>
         </form>
+        {% render 'cart-upsell' %}
       </div>
 
       <div class="cart-page__summary">
@@ -29,6 +30,7 @@
               <span>-{{ discount.total_allocated_amount | money }}</span>
             </div>
           {%- endfor -%}
+          {% render 'cart-perks' %}
           <div class="cart-summary__row cart-summary__total">
             <span>{{ 'cart.general.subtotal' | t }}</span>
             <span>{{ cart.total_price | money_with_currency }}</span>
@@ -37,6 +39,7 @@
           <button type="submit" name="checkout" form="CartForm" class="button button--accent button--full">
             {% render 'icon', name: 'lock' %} {{ 'cart.general.checkout' | t }}
           </button>
+          {%- if settings.cart_show_payment_icons -%}{% render 'payment-trust' %}{%- endif -%}
           {%- if additional_checkout_buttons and section.settings.show_express -%}
             <div class="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
           {%- endif -%}

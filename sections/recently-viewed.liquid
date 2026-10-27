@@ -1,0 +1,45 @@
+{%- comment -%} Produits consultés récemment par le visiteur (mémorisés dans son navigateur) {%- endcomment -%}
+<div data-recently-viewed-current="{{ product.handle }}" hidden></div>
+<recently-viewed
+  class="section{% if section.settings.background == 'surface' %} section--surface{% endif %}"
+  style="display: block;"
+  data-exclude="{{ product.handle }}"
+  data-limit="{{ section.settings.limit }}"
+  data-root="{{ routes.root_url }}"
+  hidden
+>
+  <div class="page-width">
+    <div class="section-header">
+      <div class="section-header__text">
+        {%- if section.settings.eyebrow != blank -%}<span class="eyebrow">{{ section.settings.eyebrow | escape }}</span>{%- endif -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      </div>
+    </div>
+    <div class="scroller scroller--desktop-grid" style="--cols: {{ section.settings.limit }}; --cols-mobile: 2;" role="list" data-recently-grid></div>
+  </div>
+</recently-viewed>
+
+{% schema %}
+{
+  "name": "Vus récemment",
+  "tag": "section",
+  "class": "section-recently-viewed",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Surtitre", "default": "Votre sélection" },
+    { "type": "text", "id": "heading", "label": "Titre", "default": "Vus récemment" },
+    { "type": "range", "id": "limit", "label": "Nombre de produits", "min": 2, "max": 6, "step": 1, "default": 4 },
+    {
+      "type": "select",
+      "id": "background",
+      "label": "Fond",
+      "options": [
+        { "value": "default", "label": "Blanc" },
+        { "value": "surface", "label": "Coloré" }
+      ],
+      "default": "default"
+    }
+  ],
+  "presets": [{ "name": "Vus récemment" }],
+  "enabled_on": { "templates": ["product"] }
+}
+{% endschema %}
