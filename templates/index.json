@@ -179,7 +179,7 @@
       "settings": {
         "eyebrow": "Offre limitée",
         "heading": "-15 % sur votre première commande",
-        "text": "<p>Entrez ce code au paiement : -15 % sur toute votre première commande, livraison offerte incluse.</p>",
+        "text": "<p>Créez votre compte NOVA et entrez ce code au paiement : -15 % sur votre première commande. Valable une seule fois par compte.</p>",
         "code": "BIENVENUE15",
         "button_label": "J'en profite",
         "button_link": "shopify://collections/all",
