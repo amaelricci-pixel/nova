@@ -1,0 +1,54 @@
+{%- comment -%}
+  Barre de navigation fixe en bas de l'écran, sur téléphone uniquement.
+{%- endcomment -%}
+{%- liquid
+  assign dogs = collections['chiens']
+  assign cats = collections['chats']
+  assign active = ''
+  if template.name == 'index'
+    assign active = 'home'
+  elsif template.name == 'collection'
+    if collection.handle == 'chiens' or collection.handle contains '-pour-chien'
+      assign active = 'dogs'
+    elsif collection.handle == 'chats' or collection.handle contains '-pour-chat' or collection.handle == 'arbres-a-chat-griffoirs'
+      assign active = 'cats'
+    endif
+  elsif template.name == 'search'
+    assign active = 'search'
+  elsif template.name == 'cart'
+    assign active = 'cart'
+  endif
+-%}
+<nav class="tabbar" aria-label="{{ 'accessibility.main_navigation' | t }}">
+  <a href="{{ routes.root_url }}" class="tabbar__item tabbar__item--home{% if active == 'home' %} is-active{% endif %}"{% if active == 'home' %} aria-current="page"{% endif %}>
+    <span class="tabbar__icon">{% render 'icon', name: 'home' %}</span>
+    <span class="tabbar__label">{{ 'general.navigation.home' | t }}</span>
+  </a>
+  {%- if dogs != blank -%}
+    <a href="{{ dogs.url }}" class="tabbar__item tabbar__item--dogs{% if active == 'dogs' %} is-active{% endif %}"{% if active == 'dogs' %} aria-current="page"{% endif %}>
+      <span class="tabbar__icon">{% render 'icon', name: 'dog' %}</span>
+      <span class="tabbar__label">{{ dogs.title | escape }}</span>
+    </a>
+  {%- endif -%}
+  {%- if cats != blank -%}
+    <a href="{{ cats.url }}" class="tabbar__item tabbar__item--cats{% if active == 'cats' %} is-active{% endif %}"{% if active == 'cats' %} aria-current="page"{% endif %}>
+      <span class="tabbar__icon">{% render 'icon', name: 'cat' %}</span>
+      <span class="tabbar__label">{{ cats.title | escape }}</span>
+    </a>
+  {%- endif -%}
+  <a href="{{ routes.search_url }}" class="tabbar__item tabbar__item--search{% if active == 'search' %} is-active{% endif %}" data-open-drawer="SearchModal">
+    <span class="tabbar__icon">{% render 'icon', name: 'search' %}</span>
+    <span class="tabbar__label">{{ 'general.search.title' | t }}</span>
+  </a>
+  <a href="{{ routes.cart_url }}" class="tabbar__item tabbar__item--cart{% if active == 'cart' %} is-active{% endif %}" data-cart-trigger>
+    <span class="tabbar__icon">
+      {% render 'icon', name: 'cart' %}
+      <span data-cart-count-wrapper>
+        {%- if cart.item_count > 0 -%}
+          <span class="cart-count" data-cart-count aria-hidden="true">{{ cart.item_count | at_most: 99 }}</span>
+        {%- endif -%}
+      </span>
+    </span>
+    <span class="tabbar__label">{{ 'cart.general.title' | t }}</span>
+  </a>
+</nav>
