@@ -1,0 +1,120 @@
+{%- comment -%}
+  Assistant NOVA : répond aux questions fréquentes à partir des réponses ci-dessous.
+  S'il ne trouve pas, le client envoie sa question via le formulaire de contact Shopify,
+  qui arrive par e-mail à l'adresse de la boutique.
+{%- endcomment -%}
+{%- if section.settings.enabled -%}
+  {%- form 'contact', id: 'SupportBotForm', class: 'bot__handoff' -%}
+    {%- liquid
+      assign posted = false
+      if form.posted_successfully?
+        assign posted = true
+      endif
+      assign has_errors = false
+      if form.errors
+        assign has_errors = true
+      endif
+    -%}
+    <support-bot class="bot" data-open="{% if posted or has_errors %}true{% else %}false{% endif %}">
+      <button type="button" class="bot__launcher" aria-expanded="false" aria-controls="SupportBotPanel">
+        {% render 'icon', name: 'chat' %}
+        <span class="bot__launcher-label">{{ section.settings.launcher_label | escape }}</span>
+      </button>
+
+      <div class="bot__panel" id="SupportBotPanel" role="dialog" aria-modal="false" aria-labelledby="SupportBotTitle" hidden>
+        <div class="bot__header">
+          <span class="bot__avatar" aria-hidden="true">{% render 'icon', name: 'paw' %}</span>
+          <div class="bot__heading">
+            <p class="bot__title" id="SupportBotTitle">{{ section.settings.title | escape }}</p>
+            <p class="bot__status">{{ section.settings.subtitle | escape }}</p>
+          </div>
+          <button type="button" class="icon-button bot__close" data-bot-close aria-label="{{ 'accessibility.close' | t }}">{% render 'icon', name: 'close' %}</button>
+        </div>
+
+        <div class="bot__scroll">
+        <div class="bot__messages" data-bot-messages aria-live="polite">
+          <div class="bot__msg bot__msg--bot">{{ section.settings.greeting }}</div>
+          {%- if posted -%}
+            <div class="bot__msg bot__msg--bot bot__msg--success">{{ section.settings.sent_message }}</div>
+          {%- elsif has_errors -%}
+            <div class="bot__msg bot__msg--bot bot__msg--error">{{ form.errors | default_errors }}</div>
+          {%- endif -%}
+        </div>
+
+        <div class="bot__chips" data-bot-chips>
+          {%- for block in section.blocks -%}
+            {%- if block.settings.label != blank -%}
+              <button type="button" class="bot__chip" data-bot-chip="{{ block.id }}" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</button>
+            {%- endif -%}
+          {%- endfor -%}
+          <button type="button" class="bot__chip bot__chip--human" data-bot-handoff>{{ section.settings.handoff_label | escape }}</button>
+        </div>
+
+        <div class="bot__handoff-fields" data-bot-handoff-fields{% unless has_errors %} hidden{% endunless %}>
+          <p class="bot__handoff-intro">{{ section.settings.handoff_intro | escape }}</p>
+          <input type="hidden" name="contact[Sujet]" value="Assistant NOVA – question client">
+          <input type="hidden" name="contact[name]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+          <label class="visually-hidden" for="SupportBotEmail">{{ 'templates.contact.email' | t }}</label>
+          <input class="input" type="email" id="SupportBotEmail" name="contact[email]" required autocomplete="email" placeholder="{{ 'templates.contact.email' | t }} *" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          <label class="visually-hidden" for="SupportBotOrder">{{ 'templates.contact.order' | t }}</label>
+          <input class="input" type="text" id="SupportBotOrder" name="contact[Commande]" placeholder="{{ 'templates.contact.order' | t }}">
+          <label class="visually-hidden" for="SupportBotBody">{{ 'templates.contact.message' | t }}</label>
+          <textarea class="textarea" id="SupportBotBody" name="contact[body]" required rows="4" placeholder="{{ 'templates.contact.message' | t }} *" data-bot-body>{{ form.body }}</textarea>
+          <button type="submit" class="button button--accent button--full">{{ 'templates.contact.send' | t }}</button>
+        </div>
+        </div>
+
+        <div class="bot__composer" data-bot-composer>
+          <label class="visually-hidden" for="SupportBotInput">{{ section.settings.input_placeholder | escape }}</label>
+          <input type="text" id="SupportBotInput" class="bot__input" autocomplete="off" placeholder="{{ section.settings.input_placeholder | escape }}" data-bot-input>
+          <button type="button" class="bot__send" data-bot-send aria-label="{{ 'templates.contact.send' | t }}">{% render 'icon', name: 'send' %}</button>
+        </div>
+      </div>
+
+      {%- for block in section.blocks -%}
+        <template data-bot-answer="{{ block.id }}" data-keywords="{{ block.settings.keywords | escape }}" data-label="{{ block.settings.label | escape }}">{{ block.settings.answer }}</template>
+      {%- endfor -%}
+      <template data-bot-fallback>{{ section.settings.fallback }}</template>
+      <template data-bot-followup>{{ section.settings.followup | escape }}</template>
+    </support-bot>
+  {%- endform -%}
+  <script src="{{ 'support-bot.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Assistant (chat)",
+  "tag": "section",
+  "class": "section-support-bot",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Afficher l'assistant", "default": true },
+    {
+      "type": "paragraph",
+      "content": "L'assistant répond avec les réponses ci-dessous (blocs). S'il ne trouve pas, le client vous écrit : le message arrive par e-mail, à l'adresse de la boutique."
+    },
+    { "type": "text", "id": "launcher_label", "label": "Texte du bouton", "default": "Une question ?" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Assistant NOVA" },
+    { "type": "text", "id": "subtitle", "label": "Sous-titre", "default": "Réponses immédiates" },
+    { "type": "richtext", "id": "greeting", "label": "Message d'accueil", "default": "<p>Bonjour 👋 Je suis l'assistant NOVA. Posez votre question ou choisissez un sujet ci-dessous.</p>" },
+    { "type": "text", "id": "input_placeholder", "label": "Texte du champ", "default": "Écrivez votre question…" },
+    { "type": "text", "id": "followup", "label": "Question après une réponse", "default": "Est-ce que cela répond à votre question ?" },
+    { "type": "richtext", "id": "fallback", "label": "Quand l'assistant ne sait pas", "default": "<p>Je n'ai pas de réponse sûre à cette question. Laissez-nous votre e-mail et votre message : l'équipe NOVA vous répond personnellement.</p>" },
+    { "type": "text", "id": "handoff_label", "label": "Bouton « parler à l'équipe »", "default": "Écrire à l'équipe" },
+    { "type": "text", "id": "handoff_intro", "label": "Texte au-dessus du formulaire", "default": "Votre message est envoyé directement à l'équipe NOVA." },
+    { "type": "richtext", "id": "sent_message", "label": "Message après envoi", "default": "<p>Merci ! Votre message a bien été envoyé. L'équipe NOVA vous répond par e-mail dans les meilleurs délais.</p>" }
+  ],
+  "blocks": [
+    {
+      "type": "answer",
+      "name": "Réponse",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Bouton de sujet", "info": "Laissez vide pour ne pas afficher de bouton." },
+        { "type": "textarea", "id": "keywords", "label": "Mots-clés", "info": "Séparés par des virgules. Ex. : livraison, délai, frais de port" },
+        { "type": "richtext", "id": "answer", "label": "Réponse" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Assistant (chat)" }],
+  "enabled_on": { "groups": ["footer"] }
+}
+{% endschema %}

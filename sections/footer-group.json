@@ -33,9 +33,101 @@
         "text-1"
       ],
       "settings": {}
+    },
+    "support-bot": {
+      "type": "support-bot",
+      "blocks": {
+        "answer-1": {
+          "type": "answer",
+          "settings": {
+            "label": "Livraison",
+            "keywords": "livraison, livrer, livre, delai, délai, expedition, expédition, expedie, expédié, combien de temps, frais de port, port, gratuit, gratuite, arrive, recevoir, quand",
+            "answer": "<p>🚚 La livraison est <strong>offerte en France</strong>.</p><p>Votre commande est préparée sous 1 à 4 jours ouvrés, puis livrée en <strong>7 à 15 jours ouvrés environ</strong>. Vous recevez un e-mail avec le numéro de suivi dès l'expédition.</p>"
+          }
+        },
+        "answer-2": {
+          "type": "answer",
+          "settings": {
+            "label": "Suivre ma commande",
+            "keywords": "suivi, suivre, colis, tracking, numero de suivi, numéro de suivi, ou est, où est, pas recu, pas reçu, toujours pas, ma commande, retard",
+            "answer": "<p>📦 Dès l'expédition, vous recevez un e-mail avec votre <strong>numéro de suivi</strong>. Vous retrouvez aussi vos commandes dans votre <strong>compte NOVA</strong> (icône 👤 en haut de la page).</p><p>Si votre colis n'est pas arrivé après 15 jours ouvrés, écrivez-nous avec votre numéro de commande.</p>"
+          }
+        },
+        "answer-3": {
+          "type": "answer",
+          "settings": {
+            "label": "Retours & remboursement",
+            "keywords": "retour, retourner, renvoyer, rembourse, remboursement, rembourser, echange, échange, echanger, retractation, rétractation, changer d avis, 14 jours, satisfait",
+            "answer": "<p>↩️ Vous avez <strong>14 jours après réception</strong> pour changer d'avis.</p><p>Écrivez-nous d'abord pour recevoir l'adresse de retour. Les frais de retour sont à votre charge, et le remboursement est fait sous 14 jours après réception du produit retourné.</p>"
+          }
+        },
+        "answer-4": {
+          "type": "answer",
+          "settings": {
+            "label": "Produit abîmé",
+            "keywords": "abime, abîmé, casse, cassé, defectueux, défectueux, endommage, endommagé, manquant, manque, erreur, mauvais produit, ne marche pas, ne fonctionne pas, panne",
+            "answer": "<p>😟 Désolé ! Écrivez-nous <strong>dans les 48 h suivant la réception</strong> avec votre numéro de commande et des photos du produit et du colis. Nous trouvons une solution avec vous.</p>"
+          }
+        },
+        "answer-5": {
+          "type": "answer",
+          "settings": {
+            "label": "Code -15 %",
+            "keywords": "code, promo, code promo, reduction, réduction, remise, bienvenue, bienvenue15, 15, 15 %, premiere commande, première commande, offre",
+            "answer": "<p>🎁 Avec le code <strong>BIENVENUE15</strong>, vous avez <strong>-15 % sur votre première commande</strong>. Il s'utilise <strong>une seule fois par compte NOVA</strong> : entrez-le à l'étape du paiement.</p>"
+          }
+        },
+        "answer-6": {
+          "type": "answer",
+          "settings": {
+            "label": "Mon compte",
+            "keywords": "compte, connexion, connecter, se connecter, inscription, inscrire, creer un compte, créer un compte, mot de passe, identifiant, login, adresse mail",
+            "answer": "<p>👤 Un compte NOVA est nécessaire pour commander. Pas de mot de passe : entrez votre e-mail, vous recevez un <strong>code de connexion</strong> et votre compte est créé automatiquement. Vous y retrouvez vos commandes et vos adresses.</p>"
+          }
+        },
+        "answer-7": {
+          "type": "answer",
+          "settings": {
+            "label": "Paiement",
+            "keywords": "paiement, payer, carte, carte bancaire, cb, paypal, apple pay, google pay, securise, sécurisé, plusieurs fois",
+            "answer": "<p>🔒 Le paiement est <strong>100 % sécurisé</strong> par Shopify. Les moyens de paiement disponibles s'affichent à l'étape du paiement.</p>"
+          }
+        },
+        "answer-8": {
+          "type": "answer",
+          "settings": {
+            "label": "Choisir la taille",
+            "keywords": "taille, tailles, mesure, mesurer, dimension, dimensions, grand, petit, quelle taille, guide des tailles, poids",
+            "answer": "<p>📏 Chaque fiche produit indique les dimensions et un guide des tailles dans sa description. Mesurez votre animal (couché en boule pour un panier) et prenez la taille juste au-dessus.</p><p>Un doute ? Écrivez-nous les mesures de votre animal, on vous conseille.</p>"
+          }
+        },
+        "answer-9": {
+          "type": "answer",
+          "settings": {
+            "label": "",
+            "keywords": "etranger, étranger, belgique, suisse, luxembourg, international, europe, hors de france, dom tom, outre mer, pays, canada",
+            "answer": "<p>🌍 Pour le moment, NOVA livre <strong>uniquement en France</strong>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "answer-1",
+        "answer-2",
+        "answer-3",
+        "answer-4",
+        "answer-5",
+        "answer-6",
+        "answer-7",
+        "answer-8",
+        "answer-9"
+      ],
+      "settings": {
+        "enabled": true
+      }
     }
   },
   "order": [
-    "footer"
+    "footer",
+    "support-bot"
   ]
 }
